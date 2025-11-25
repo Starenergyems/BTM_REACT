@@ -1,0 +1,12 @@
+services:
+  nginx-react:
+    container_name: front-end
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 4080:80
+    volumes:
+      # - ./:/app
+      # - ./dist:/usr/share/nginx/html
+      - ./log:/var/log/nginx
