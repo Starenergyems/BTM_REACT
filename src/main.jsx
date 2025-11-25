@@ -8,7 +8,7 @@ import "dayjs/locale/zh-tw";
 import { MsalProvider } from "@azure/msal-react";
 import { store } from "@/store/index";
 import App from "@/App.jsx";
-import { msalInstance } from "@/pages/page/login/page/accountPassword/indexConfig";
+import { msalInstance } from "@/pages/page/accountPassword/indexConfig";
 
 dayjs.locale("zh-cn");
 

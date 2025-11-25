@@ -3,22 +3,11 @@ import {
   configureStore,
   createAction,
 } from "@reduxjs/toolkit";
-import { apiReducer, layoutReducer, menuReducer } from "@/slices/index";
+import { layoutReducer, menuReducer } from "@/slices/index";
 
 const resetStore = createAction("reset");
 
 const combinedReducer = combineReducers({
-  apiAbnormalEvents: apiReducer.abnormalEvents,
-  apiAccounts: apiReducer.accounts,
-  apiBidPrediction: apiReducer.bidPrediction,
-  apiDashboard: apiReducer.dashboard,
-  apiEnterpriseServices: apiReducer.enterpriseServices,
-  apiInvestmentStrategy: apiReducer.investmentStrategy,
-  apiOperationAndMaintenance: apiReducer.operationAndMaintenance,
-  apiResources: apiReducer.resources,
-  apiRevenue: apiReducer.revenue,
-  apiSystem: apiReducer.system,
-  apiToken: apiReducer.token,
   layout: layoutReducer,
   menu: menuReducer,
 });

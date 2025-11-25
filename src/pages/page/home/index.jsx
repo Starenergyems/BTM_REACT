@@ -1,8 +1,5 @@
-import { Navigate } from "react-router-dom";
-import { pagesPathName } from "@/router";
-
 function Home() {
-  return <Navigate to={pagesPathName.dashboard.path} />;
+  return <h1>Home Page</h1>;
 }
 
 export default Home;

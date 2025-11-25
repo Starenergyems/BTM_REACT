@@ -1,4 +1,3 @@
-import { Badge } from "antd";
 import { Icon } from "@iconify/react";
 import { pagesPathName } from "@/router";
 import {
@@ -7,7 +6,6 @@ import {
   setSiderCollapsed,
 } from "@/slices/menu";
 import { clearToken } from "@/slices/api/main/token";
-import { color } from "@/styles/variable/indexStyle";
 
 function useHelpers({
   dispatch,
@@ -19,103 +17,16 @@ function useHelpers({
   //Menu 上方區塊
   function getMenuMainItems(omRole) {
     const items = [
-      // {
-      //   key: "demo",
-      //   icon: <Icon icon="material-symbols:home-work-outline-rounded" />,
-      //   label: "示範頁面",
-      //   children: [
-      //     {
-      //       key: pagesPathName.demo.path,
-      //       label: "示範客製化className使用",
-      //     },
-      //   ],
-      // },
       {
-        key: "modeCtrl",
-        icon: <Icon icon="ant-design:control-outlined" />,
-        label: "模式控制",
+        key: "demo",
+        icon: <Icon icon="material-symbols:home-work-outline-rounded" />,
+        label: "示範頁面",
         children: [
           {
-            key: pagesPathName.sysCtrl.path,
-            label: "系統控制",
-          },
-          {
-            key: pagesPathName.schCtrl.path,
-            label: "排程設置",
-          },
-          {
-            key: pagesPathName.subSysInfo.path,
-            label: "子系統資訊",
+            key: pagesPathName.demo.path,
+            label: "示範客製化className使用",
           },
         ],
-      },
-      {
-        key: "optInfo",
-        icon: <Icon icon="tdesign:system-sum" />,
-        label: "運轉資訊",
-        children: [
-          {
-            key: pagesPathName.meter.path,
-            label: "電表資訊",
-          },
-          {
-            key: pagesPathName.pcsSum.path,
-            label: "PCS",
-          },
-          {
-            key: pagesPathName.batRack.path,
-            label: "電池與貨櫃",
-          },
-        ],
-      },
-      {
-        key: "systemControl",
-        icon: <Icon icon="eos-icons:file-system-outlined" />,
-        label: "系統控制",
-        children: [
-          {
-            key: pagesPathName.communicationArchitecture.path,
-            label: "通訊架構圖",
-          },
-          {
-            key: pagesPathName.environmentControl.path,
-            label: "環境控制",
-          },
-        ],
-      },
-      {
-        key: pagesPathName.alarmLog.path,
-        icon: <Icon icon="icon-park-outline:alarm" />,
-        label: "告警紀錄",
-      },
-      {
-        key: pagesPathName.eventLog.path,
-        icon: <Icon icon="material-symbols:event-list-outline-rounded" />,
-        label: "事件紀錄",
-      },
-      {
-        key: "reportInfo",
-        icon: <Icon icon="mingcute:report-forms-line" />,
-        label: "報表資訊",
-        children: [
-          {
-            key: pagesPathName.dailyReport.path,
-            label: "日報",
-          },
-          {
-            key: pagesPathName.monthlyReport.path,
-            label: "月報",
-          },
-          {
-            key: pagesPathName.annualReport.path,
-            label: "年報",
-          },
-        ],
-      },
-      {
-        key: pagesPathName.realTimeAndHistorical.path,
-        icon: <Icon icon="mdi:report-areaspline" />,
-        label: "觀測圖表",
       },
     ];
     const permissionsItems = [];
@@ -134,43 +45,9 @@ function useHelpers({
   function getMenuOtherItems(omRole) {
     const items = [
       {
-        key: "importantInfo",
-        icon: (
-          <Badge dot color={color.red} offset={[-5, 2]}>
-            <Icon
-              icon="solar:bolt-circle-linear"
-              className="icon-important-info"
-              color={color.lightBlue}
-            />
-          </Badge>
-        ),
-        label: "重要數據",
-      },
-      {
-        key: pagesPathName.userInformation.path,
-        icon: <Icon icon="teenyicons:user-circle-outline" />,
-        label: "使用者資訊",
-      },
-      {
-        key: pagesPathName.systemSetting.path,
-        icon: <Icon icon="mdi:gear" />,
-        label: "系統設定",
-      },
-      {
         key: "logout",
         icon: <Icon icon="icon-park-outline:logout" />,
         label: "登出",
-      },
-      {
-        key: "shutdown",
-        icon: (
-          <Icon
-            className="icon-shutdown"
-            color={color.red}
-            icon="lets-icons:on-button"
-          />
-        ),
-        label: "緊急停機",
       },
     ];
     const permissionsItems = [];

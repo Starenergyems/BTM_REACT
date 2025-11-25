@@ -9,9 +9,9 @@ function ProtectedRoute({ element: Element }) {
   const permissions = pageItem?.permissions;
 
   if (
-    accountsState.omRole !== null &&
+    accountsState?.omRole !== null &&
     permissions &&
-    !permissions.includes(accountsState.omRole)
+    !permissions.includes(accountsState?.omRole)
   ) {
     return <Navigate to={pagesPathName.notfound.path} replace />;
   }

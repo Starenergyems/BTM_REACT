@@ -3,6 +3,7 @@ import { Icon } from "@iconify/react";
 import { color } from "@/styles/variable/indexStyle";
 import ScopeStyle from "./indexStyle";
 import { backOnClick } from "./indexHelper";
+
 function PageBox({
   backSetting = {
     isVisible: false,
@@ -17,7 +18,7 @@ function PageBox({
   const navigate = useNavigate();
   return (
     <ScopeStyle
-      className={`styled-container-page-box pd-t-50 ${
+      className={`styled-container-page-box ${
         bgColorLinearGradient ? "" : "pd-x-20"
       } ${className ?? ""}`}
       $bgColorLinearGradient={bgColorLinearGradient}
