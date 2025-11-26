@@ -365,6 +365,24 @@ const paginationStyles = css`
     }
   }
 `;
+/* Segmented */
+const segmentedStyles = css`
+  [class*="css-var"] {
+    .ant-segmented {
+      --ant-border-radius: 30px;
+      --ant-segmented-bg: ${color.lightBlue};
+      --ant-segmented-item-selected-bg: ${color.lightBlue};
+      --ant-segmented-thumb-border-radius: 30px;
+
+      .ant-segmented-thumb {
+        border-radius: 30px;
+      }
+      .ant-segmented-item {
+        --ant-border-radius-sm: 30px;
+      }
+    }
+  }
+`;
 /* Spin */
 const spinStyles = css`
   [class*="css-var"] {
@@ -1011,6 +1029,7 @@ const style = css`
   ${menuStyles}
   ${modalStyles}
   ${paginationStyles}
+  ${segmentedStyles}
   ${spinStyles}
   ${tableStyles}
   ${tabsStyles}
