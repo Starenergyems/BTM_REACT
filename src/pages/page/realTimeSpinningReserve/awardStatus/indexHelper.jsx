@@ -8,7 +8,7 @@ import { customLegendNameMap } from "./indexConfig";
 // 2. api function
 // 3. 一般function
 function useHelpers({ refs, setMainState }) {
-  const { revenueSharingRef, revenueSharingChartRef } = refs;
+  const { awardPowerRef, awardPowerChartRef } = refs;
   /* Memoized Common Functions */
   //表格是否loading
   const setTableLoading = useCallback(
@@ -108,7 +108,7 @@ function useHelpers({ refs, setMainState }) {
     ];
   }
   //當月分帳bar堆疊圖設定檔
-  const getRevenueSharingOption = useCallback(() => {
+  const getAwardPowerOption = useCallback(() => {
     return {
       tooltip: {
         trigger: "axis",
@@ -236,12 +236,12 @@ function useHelpers({ refs, setMainState }) {
     };
   }, []);
   //當月分帳bar堆疊圖設定檔繪製
-  const setRevenueSharingChart = useCallback(
+  const setAwardPowerChart = useCallback(
     (option) => {
-      if (revenueSharingRef.current) {
-        if (!revenueSharingChartRef.current) {
-          revenueSharingChartRef.current = echarts.init(
-            revenueSharingRef.current,
+      if (awardPowerRef.current) {
+        if (!awardPowerChartRef.current) {
+          awardPowerChartRef.current = echarts.init(
+            awardPowerRef.current,
             null,
             {
               renderer: "canvas",
@@ -249,10 +249,10 @@ function useHelpers({ refs, setMainState }) {
             }
           );
         }
-        revenueSharingChartRef.current.setOption(option);
+        awardPowerChartRef.current.setOption(option);
       }
     },
-    [revenueSharingChartRef, revenueSharingRef]
+    [awardPowerChartRef, awardPowerRef]
   );
   //當月分帳bar堆疊圖客製化legend觸發事件
   function customLegendOnClick(name, chart) {
@@ -277,8 +277,8 @@ function useHelpers({ refs, setMainState }) {
     customLegendOnClick,
     getAwardData,
     getAwardSatusTableColumns,
-    getRevenueSharingOption,
-    setRevenueSharingChart,
+    getAwardPowerOption,
+    setAwardPowerChart,
     setTableLoading,
   };
 }
