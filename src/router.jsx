@@ -14,6 +14,11 @@ const pagesPathName = {
   home: { routeName: "", path: "/" },
   //登入頁
   login: { routeName: "login", path: "/login" },
+  //即時備轉
+  realTimeSpinningReserve: {
+    routeName: "realTimeSpinningReserve",
+    path: "/realTimeSpinningReserve",
+  },
   //重設密碼頁
   resetPassword: { routeName: "resetPassword", path: "/resetPassword" },
   //密碼變更成功頁
@@ -45,6 +50,15 @@ const routes = [
         path: pagesPathName.demo.routeName,
         async lazy() {
           return getLazyComponent(await import("@/pages/page/demo/index"));
+        },
+      },
+      {
+        //即時備轉頁
+        path: pagesPathName.realTimeSpinningReserve.routeName,
+        async lazy() {
+          return getLazyComponent(
+            await import("@/pages/page/realTimeSpinningReserve/index")
+          );
         },
       },
     ],
