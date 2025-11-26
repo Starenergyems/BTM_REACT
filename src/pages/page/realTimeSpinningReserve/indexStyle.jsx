@@ -2,6 +2,22 @@ import { color } from "@/styles/variable/indexStyle";
 import styled from "styled-components";
 
 const style = styled.div`
+  .ant-table-wrapper {
+    .ant-table {
+      --ant-table-header-bg: ${color.themeBlack};
+      --ant-table-header-color: ${color.white};
+      --ant-table-border-color: #455663;
+
+      .ant-table-row {
+        background-color: #4a525f;
+
+        [class*="ant-table-cell-fix"] {
+          background-color: #4a525f;
+        }
+      }
+    }
+  }
+
   .section-header {
     background-color: ${color.themeBlack};
     border-radius: 20px;
@@ -14,7 +30,7 @@ const style = styled.div`
     }
   }
   .revenue-sharing-bar-stack-chart {
-    min-height: 450px;
+    min-height: 300px;
   }
   .custom-legend {
     position: relative;

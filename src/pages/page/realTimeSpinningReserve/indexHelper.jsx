@@ -9,21 +9,104 @@ import { customLegendNameMap } from "./indexConfig";
 // 3. 一般function
 function useHelpers({ refs, setMainState }) {
   const { revenueSharingRef, revenueSharingChartRef } = refs;
+  /* Memoized Common Functions */
+  //表格是否loading
+  const setTableLoading = useCallback(
+    (isLoading, tableTypeState) => {
+      if (setMainState) {
+        setMainState((prevState) => ({
+          ...prevState,
+          [tableTypeState]: isLoading,
+        }));
+      }
+    },
+    [setMainState]
+  );
 
   const getAwardData = useCallback(() => {
     const fetchData = {
-      today: [...Array(24)].map(() => Math.floor(Math.random() * 51)),
-      tomorrow: [...Array(24)].map(() => Math.floor(Math.random() * 51)),
+      today: [...Array(24)].map((item, index) => {
+        if (index === 2) {
+          return { hour: 2, awardCapacity: 450, awardPower: 450 };
+        } else if (index === 3) {
+          return { hour: 3, awardCapacity: 550, awardPower: 550 };
+        } else if (index === 4) {
+          return { hour: 4, awardCapacity: 600, awardPower: 600 };
+        }
+        return { hour: index, awardCapacity: 0, awardPower: 0 };
+      }),
+      // [
+      //   { hour: 2, awardCapacity: 500, awardPower: 500 },
+      //   { hour: 3, awardCapacity: 500, awardPower: 500 },
+      //   { hour: 4, awardCapacity: 500, awardPower: 500 },
+      // ],
+      tomorrow: [...Array(24)].map((item, index) => {
+        if (index === 3) {
+          return { hour: 3, awardCapacity: 500, awardPower: 500 };
+        } else if (index === 4) {
+          return { hour: 4, awardCapacity: 500, awardPower: 500 };
+        } else if (index === 5) {
+          return { hour: 5, awardCapacity: 500, awardPower: 500 };
+        }
+        return { hour: index, awardCapacity: 0, awardPower: 0 };
+      }),
     };
-    setMainState((prevState) => ({
-      ...prevState,
-      awardData: {
-        ...prevState.awardData,
-        today: fetchData.today,
-        tomorrow: fetchData.tomorrow,
-      },
-    }));
+
+    setMainState((prevState) => {
+      const obj = {};
+      fetchData[prevState.awardStatus].forEach((item) => {
+        obj[`${item.hour}:00`] = item.awardCapacity;
+      });
+      obj["id"] = "only-row"; //為了給table元件作為rowKey的識別，因為UI的設計不符合一般table的資料結構
+      return {
+        ...prevState,
+        awardData: {
+          ...prevState.awardData,
+          today: fetchData.today,
+          tomorrow: fetchData.tomorrow,
+        },
+        awardTableData: [obj],
+      };
+    });
   }, [setMainState]);
+  //取得得標狀態的表格欄位
+  function getAwardSatusTableColumns() {
+    const hourList = [...Array(24)].map((_item, index) => {
+      return {
+        title: index,
+        align: "center",
+        width: 45,
+        render: (value) => {
+          const isRealTimeSpinningReserve = Object.keys(value).some(
+            (hourKey) => parseInt(hourKey) === index
+          );
+          if (isRealTimeSpinningReserve) {
+            return value[`${index}:00`];
+          }
+          return 0;
+        },
+        onCell: () => ({
+          style: { color: color.lightBlue },
+        }),
+      };
+    });
+    return [
+      {
+        title: "整點",
+        align: "center",
+        fixed: "left",
+        width: 80,
+        render: () => (
+          <>
+            得標量
+            <br />
+            (kWh)
+          </>
+        ),
+      },
+      ...hourList,
+    ];
+  }
   //當月分帳bar堆疊圖設定檔
   const getRevenueSharingOption = useCallback(() => {
     return {
@@ -110,6 +193,9 @@ function useHelpers({ refs, setMainState }) {
         ),
       },
       yAxis: {
+        min: 0,
+        max: 3000,
+        inerval: 500,
         name: "得標功率 kW",
         nameLocation: "end",
         nameTextStyle: {
@@ -190,8 +276,10 @@ function useHelpers({ refs, setMainState }) {
   return {
     customLegendOnClick,
     getAwardData,
+    getAwardSatusTableColumns,
     getRevenueSharingOption,
     setRevenueSharingChart,
+    setTableLoading,
   };
 }
 

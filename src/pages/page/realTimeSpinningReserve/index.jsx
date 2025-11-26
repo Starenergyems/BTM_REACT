@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Card, Flex, Segmented } from "antd";
+import { Card, Flex, Segmented, Table } from "antd";
 import { color } from "@/styles/variable/indexStyle";
 import { useHelpers } from "./indexHelper";
 import ScopeStyle from "./indexStyle";
@@ -8,12 +8,14 @@ import { useEchartAutoResize } from "@/hooks/useEchartAutoResize";
 
 function RealTimeSpinningReserve() {
   const [mainState, setMainState] = useState({
-    awardStatus: "today",
     awardData: {
       today: [],
       tomorrow: [],
     },
+    awardStatus: "today",
+    awardTableData: [],
     customLegend: {},
+    isAwardTableLoading: false,
   });
   const revenueSharingRef = useRef(null);
   const revenueSharingChartRef = useRef(null);
@@ -21,6 +23,7 @@ function RealTimeSpinningReserve() {
   const {
     customLegendOnClick,
     getAwardData,
+    getAwardSatusTableColumns,
     getRevenueSharingOption,
     setRevenueSharingChart,
   } = useHelpers({
@@ -56,8 +59,9 @@ function RealTimeSpinningReserve() {
         ...revenueSharingOption,
         series: JSON.parse(JSON.stringify(revenueSharingOption.series)),
       };
-      newOption.series[0].data = mainState.awardData[mainState.awardStatus];
-
+      newOption.series[0].data = mainState.awardData[mainState.awardStatus].map(
+        (item) => item.awardPower
+      );
       setRevenueSharingChart(newOption);
     }
   }, [
@@ -86,6 +90,7 @@ function RealTimeSpinningReserve() {
               ...prevState,
               awardStatus: value,
             }));
+            getAwardData();
           }}
         />
         <Flex align="center" className="cloud-status-container">
@@ -129,6 +134,18 @@ function RealTimeSpinningReserve() {
           );
         })}
       </Flex>
+      <Table
+        className="theme-secondary mg-t-36"
+        columns={getAwardSatusTableColumns()}
+        dataSource={mainState.awardTableData}
+        loading={mainState.isAwardTableLoading}
+        pagination={false}
+        rowClassName="custom-no-hover"
+        rowKey="id"
+        scroll={{
+          x: "max-content",
+        }}
+      />
     </ScopeStyle>
   );
 }
