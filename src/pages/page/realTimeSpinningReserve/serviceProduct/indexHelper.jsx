@@ -66,12 +66,18 @@ function useHelpers({ refs, setMainState }) {
   //取得服務商品API資料
   const getServiceProductData = useCallback(() => {
     const fetchData = {
-      realTimeSpinningReserve: generateMinuteIntervals("10:00"),
+      realTimeSpinningReserve: generateMinuteIntervals("10:08"),
+      spm: [...Array(24)].map((_item, index) => {
+        if ([0, 1, 5, 6, 7, 8, 9, 11, 19, 20, 21, 22, 23].includes(index)) {
+          return { hour: index, spm: null };
+        }
+        return { hour: index, spm: Math.floor(Math.random() * 101) };
+      }),
     };
     setMainState((prevState) => {
       const obj = {};
-      fetchData[prevState.serviceProductStatus].forEach((item) => {
-        obj[`${item.hour}:00`] = item.awardCapacity;
+      fetchData.spm.forEach((item) => {
+        obj[`${item.hour}:00`] = item.spm;
       });
       obj["id"] = "only-row";
       //為了給table元件作為rowKey的識別，因為UI的設計不符合一般table的資料結構
@@ -90,10 +96,10 @@ function useHelpers({ refs, setMainState }) {
         title: index,
         align: "center",
         width: 45,
-        render: (value) => value[`${index}:00`],
+        render: (value) => value[`${index}:00`] ?? "X",
         onCell: (value) => ({
           style: {
-            color: value[`${index}:00`] === "X" ? color.gray : color.lightBlue,
+            color: value[`${index}:00`] != null ? color.lightBlue : color.gray,
           },
         }),
       };
@@ -109,8 +115,8 @@ function useHelpers({ refs, setMainState }) {
       ...hourList,
     ];
   }
-  //當月分帳bar堆疊圖設定檔
-  const getrRealTimeSpinningReservePowerOption = useCallback(() => {
+  //服務商品圖設定檔
+  const getRealTimeSpinningReservePowerOption = useCallback(() => {
     return {
       tooltip: {
         trigger: "axis",
@@ -189,6 +195,7 @@ function useHelpers({ refs, setMainState }) {
             const labelWidth = 50; // 每個標籤大約佔用的寬度
             const maxLabels = Math.floor(containerWidth / labelWidth);
             const interval = Math.ceil(totalLabels / maxLabels);
+
             // 只顯示整點且符合間隔
             return value.endsWith(":00") && index % (interval * 60) === 0;
           },
@@ -280,7 +287,7 @@ function useHelpers({ refs, setMainState }) {
     };
   }, [generateMinuteIntervals, realTimeSpinningReservePowerRef]);
 
-  //當月分帳bar堆疊圖設定檔繪製
+  //服務商品繪製
   const setRealTimeSpinningReservePowerChart = useCallback(
     (option) => {
       if (realTimeSpinningReservePowerRef.current) {
@@ -299,7 +306,7 @@ function useHelpers({ refs, setMainState }) {
     },
     [realTimeSpinningReservePowerChartRef, realTimeSpinningReservePowerRef]
   );
-  //當月分帳bar堆疊圖客製化legend觸發事件
+  //服務商品客製化legend觸發事件
   function customLegendOnClick(name, chart) {
     const option = chart.getOption();
     const isSelected = !option.legend[0].selected[name];
@@ -322,7 +329,7 @@ function useHelpers({ refs, setMainState }) {
     customLegendOnClick,
     getServiceProductData,
     getSpmTableColumns,
-    getrRealTimeSpinningReservePowerOption,
+    getRealTimeSpinningReservePowerOption,
     setRealTimeSpinningReservePowerChart,
     setTableLoading,
   };

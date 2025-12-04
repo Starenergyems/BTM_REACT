@@ -23,9 +23,10 @@ function ServiceProduct() {
     customLegendOnClick,
     getServiceProductData,
     getSpmTableColumns,
-    getrRealTimeSpinningReservePowerOption,
+    getRealTimeSpinningReservePowerOption,
     setRealTimeSpinningReservePowerChart,
   } = useHelpers({
+    mainState,
     refs: {
       realTimeSpinningReservePowerRef,
       realTimeSpinningReservePowerChartRef,
@@ -33,8 +34,8 @@ function ServiceProduct() {
     setMainState,
   });
   const awardPowerOption = useMemo(
-    () => getrRealTimeSpinningReservePowerOption(),
-    [getrRealTimeSpinningReservePowerOption]
+    () => getRealTimeSpinningReservePowerOption(),
+    [getRealTimeSpinningReservePowerOption]
   );
   const customLegend = useMemo(() => {
     return Object.fromEntries(
@@ -42,12 +43,12 @@ function ServiceProduct() {
     );
   }, [awardPowerOption.legend.data]);
 
-  //取得今日、明日得標資料
+  //取得服務商品API資料
   useEffect(() => {
     getServiceProductData();
   }, [getServiceProductData]);
 
-  //當月分帳bar堆疊圖繪製
+  //服務商品繪製
   useEffect(() => {
     if (realTimeSpinningReservePowerRef.current) {
       const newOption = {
