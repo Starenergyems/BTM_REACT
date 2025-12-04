@@ -76,15 +76,7 @@ function useHelpers({ refs, setMainState }) {
         title: index,
         align: "center",
         width: 45,
-        render: (value) => {
-          const isRealTimeSpinningReserve = Object.keys(value).some(
-            (hourKey) => parseInt(hourKey) === index
-          );
-          if (isRealTimeSpinningReserve) {
-            return value[`${index}:00`];
-          }
-          return 0;
-        },
+        render: (value) => value[`${index}:00`],
         onCell: () => ({
           style: { color: color.lightBlue },
         }),
@@ -171,14 +163,6 @@ function useHelpers({ refs, setMainState }) {
         },
       },
       xAxis: {
-        name: "",
-        nameLocation: "end",
-        nameTextStyle: {
-          color: color.white,
-          fontWeight: "lighter",
-          verticalAlign: "top",
-          padding: [7, 0, 0, 0],
-        },
         type: "category",
         splitLine: { show: false },
         axisTick: {
@@ -196,14 +180,14 @@ function useHelpers({ refs, setMainState }) {
         min: 0,
         max: 3000,
         inerval: 500,
-        name: "得標功率 kW",
+        name: "得標功率 (kW)",
         nameLocation: "end",
         nameTextStyle: {
           color: color.white,
           fontWeight: "lighter",
           fontSize: 14,
           verticalAlign: "top",
-          padding: [-25, -35, 10, 0],
+          padding: [-25, 0, 10, 0],
         },
         type: "value",
         axisLabel: {

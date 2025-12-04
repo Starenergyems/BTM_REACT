@@ -14,7 +14,6 @@ function AwardStatus() {
     },
     awardStatus: "today",
     awardTableData: [],
-    customLegend: {},
     isAwardTableLoading: false,
   });
   const awardPowerRef = useRef(null);
@@ -34,17 +33,10 @@ function AwardStatus() {
     () => getAwardPowerOption(),
     [getAwardPowerOption]
   );
-
-  //初始設定
-  useEffect(() => {
-    (function () {
-      setMainState((prevState) => ({
-        ...prevState,
-        customLegend: Object.fromEntries(
-          awardPowerOption.legend.data.map((key) => [key, true])
-        ),
-      }));
-    })();
+  const customLegend = useMemo(() => {
+    return Object.fromEntries(
+      awardPowerOption.legend.data.map((key) => [key, true])
+    );
   }, [awardPowerOption.legend.data]);
 
   //取得今日、明日得標資料
@@ -72,10 +64,10 @@ function AwardStatus() {
   ]);
 
   return (
-    <ScopeStyle className="pd-x-50">
+    <ScopeStyle>
       <Flex
         align="center"
-        className="section-header mg-t-30 pd-x-20 pd-y-10"
+        className="section-header pd-x-20 pd-y-10"
         justify="space-between"
       >
         <span>得標狀態</span>
@@ -118,14 +110,14 @@ function AwardStatus() {
               <span
                 className="color-block mg-r-5"
                 style={{
-                  backgroundColor: mainState.customLegend[item]
+                  backgroundColor: customLegend[item]
                     ? awardPowerOption?.series?.[index]?.itemStyle?.color
                     : color.white,
                 }}
               ></span>
               <span
                 style={{
-                  opacity: mainState.customLegend[item] ? 1 : 0.3,
+                  opacity: customLegend[item] ? 1 : 0.3,
                 }}
               >
                 {customLegendNameMap[item]}
