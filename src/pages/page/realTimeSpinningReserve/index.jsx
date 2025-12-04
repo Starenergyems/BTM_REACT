@@ -1,6 +1,7 @@
 import AwardStatus from "./awardStatus";
 import ServiceProduct from "./serviceProduct";
 import ScopeStyle from "./indexStyle";
+import DispatchCommandList from "./dispatchCommandList";
 
 function RealTimeSpinningReserve() {
   return (
@@ -9,6 +10,8 @@ function RealTimeSpinningReserve() {
       <AwardStatus />
       {/* 服務商品 */}
       <ServiceProduct />
+      {/* 調度指令列表 */}
+      <DispatchCommandList />
     </ScopeStyle>
   );
 }
