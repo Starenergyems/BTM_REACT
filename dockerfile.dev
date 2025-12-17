@@ -1,0 +1,17 @@
+# Development mode Dockerfile
+FROM node:20-bullseye-slim
+
+WORKDIR /app
+
+# 安裝 dependencies
+COPY package*.json ./
+RUN npm ci
+
+# 複製所有檔案（會被 volume 覆蓋，但需要初始化）
+COPY . .
+
+# 開放 Vite dev server port
+EXPOSE 5173
+
+# 啟動開發模式
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]

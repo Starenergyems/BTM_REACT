@@ -26,7 +26,7 @@ const style = styled.div`
   }
   .layout-cotent {
     background: ${(props) => props.$layoutBackground};
-    margin-inline-start: 80px;
+    // margin-inline-start: 80px;
     min-height: 100vh;
   }
   .main-menu {

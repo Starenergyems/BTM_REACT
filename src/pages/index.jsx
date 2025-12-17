@@ -54,7 +54,7 @@ function PageIndex() {
         <Layout hasSider>
           {/* <Layout.Header style={{width:"100vw", backgroundColor:"red"}}>
           </Layout.Header> */}
-          <Layout.Sider
+          {/* <Layout.Sider
             className="main-menu"
             collapsed={menuState.siderIsCollapsed}
             ref={removeSiderInlineStyle}
@@ -97,7 +97,7 @@ function PageIndex() {
               selectedKeys={menuState.seoncdarySelectedKeys}
               theme="dark"
             />
-          </Layout.Sider>
+          </Layout.Sider> */}
           <Layout className="layout-cotent">
             <Outlet />
           </Layout>

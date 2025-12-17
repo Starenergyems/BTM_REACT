@@ -18,6 +18,9 @@ export default defineConfig({
     setupFiles: new URL("./src/setupTests.js", import.meta.url).pathname,
   },
   server: {
+    watch: {
+      usePolling: true,  // 讓 Docker volume 的檔案變更能被偵測
+    },
     proxy: {
       "/dev": {
         target: "http://localhost:13000", // 測試機 API
