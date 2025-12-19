@@ -4,15 +4,17 @@ import { hexToRgba } from "@/styles/function";
 import { color } from "@/styles/variable/indexStyle";
 import { customLegendNameMap } from "./indexConfig";
 
-// useHelpers為最外層function，function內區塊的撰寫順序由上而下為：
-// 1. useCallback需要相依的function
+// useHelpers 為最外層 function，function 內區塊的撰寫順序由上而下為：
+// 1. useCallback 需要相依的 function
 // 2. api function
 // 3. 一般function
+
 function useHelpers({ refs, setMainState }) {
   const {
     realTimeSpinningReservePowerRef,
     realTimeSpinningReservePowerChartRef,
   } = refs;
+
   /* Memoized Common Functions */
   // 假資料:讓資料更平滑隨機值不要落差太大
   function smoothRandom(prev, maxDelta = 5, min = 0, max = 60) {
@@ -21,11 +23,14 @@ function useHelpers({ refs, setMainState }) {
     next = Math.max(min, Math.min(max, next));
     return next;
   }
-  //假資料:暫時產出從0:00~endTime每分鐘一個資料的陣列值(陣列值為隨機負載消耗功率、)
+
+  // 假資料:暫時產出從 0:00~endTime 每分鐘一個資料的陣列值(陣列值為隨機負載消耗功率、)
   const generateMinuteIntervals = useCallback((endTime, getDataType) => {
     const [endHour, endMinute] = endTime.split(":").map(Number);
     const totalMinutes = endHour * 60 + endMinute + 1;
     const result = new Array(totalMinutes);
+
+    console.log("generateMinuteIntervals totalMinutes:", totalMinutes, result);
 
     // 初始化第一個值（可自行調整）
     let prevLoad = 30; // 初始負載功率
@@ -51,7 +56,8 @@ function useHelpers({ refs, setMainState }) {
     }
     return result;
   }, []);
-  //表格是否loading
+
+  // 表格是否 loading
   const setTableLoading = useCallback(
     (isLoading, tableTypeState) => {
       if (setMainState) {
@@ -63,7 +69,8 @@ function useHelpers({ refs, setMainState }) {
     },
     [setMainState]
   );
-  //取得服務商品API資料
+
+  // 取得服務商品 API 資料
   const getServiceProductData = useCallback(() => {
     const fetchData = {
       realTimeSpinningReserve: generateMinuteIntervals("10:08"),
@@ -80,7 +87,7 @@ function useHelpers({ refs, setMainState }) {
         obj[`${item.hour}:00`] = item.spm;
       });
       obj["id"] = "only-row";
-      //為了給table元件作為rowKey的識別，因為UI的設計不符合一般table的資料結構
+      // 為了給 table 元件作為 rowKey 的識別，因為 UI 的設計不符合一般 table 的資料結構
       return {
         ...prevState,
         serviceProductTableData: [obj],
@@ -89,7 +96,7 @@ function useHelpers({ refs, setMainState }) {
     });
   }, [generateMinuteIntervals, setMainState]);
 
-  //取得得標狀態的表格欄位
+  // 取得得標狀態的表格欄位
   function getSpmTableColumns() {
     const hourList = [...Array(24)].map((_item, index) => {
       return {
@@ -115,7 +122,24 @@ function useHelpers({ refs, setMainState }) {
       ...hourList,
     ];
   }
-  //服務商品圖設定檔
+
+  // getData
+
+  const res = (index) => {
+    const data = generateMinuteIntervals("10:08");
+    console.log("generateMinuteIntervals data:", data);
+    switch (index) {
+      case 0:
+        return data.map((item) => item.loadPower);
+      case 1:
+        return data.map((item) => item.dispatchPower);
+
+      default:
+        return [];
+    }
+  };
+
+  // 服務商品圖設定檔
   const getRealTimeSpinningReservePowerOption = useCallback(() => {
     return {
       tooltip: {
@@ -191,7 +215,7 @@ function useHelpers({ refs, setMainState }) {
             // 根據容器寬度動態計算顯示間隔
             const containerWidth =
               realTimeSpinningReservePowerRef.current?.offsetWidth || 1000;
-            const totalLabels = 24; // 24小時
+            const totalLabels = 24; // 24 小時
             const labelWidth = 50; // 每個標籤大約佔用的寬度
             const maxLabels = Math.floor(containerWidth / labelWidth);
             const interval = Math.ceil(totalLabels / maxLabels);
@@ -237,7 +261,7 @@ function useHelpers({ refs, setMainState }) {
           type: "line",
           areaStyle: {},
           name: "realTimeSpinningReserve",
-          data: [],
+          // data: res(0),
           markArea: {
             data: [[{ name: "10:08", xAxis: "10:08" }, { xAxis: "10:08" }]],
             itemStyle: {
@@ -262,7 +286,7 @@ function useHelpers({ refs, setMainState }) {
         {
           type: "line",
           name: "dispatchPower",
-          data: [],
+          // data: res(1),
           markArea: {
             data: [[{ name: "10:08", xAxis: "10:08" }, { xAxis: "10:08" }]],
             itemStyle: {
@@ -285,9 +309,9 @@ function useHelpers({ refs, setMainState }) {
         },
       ],
     };
-  }, [generateMinuteIntervals, realTimeSpinningReservePowerRef]);
+  }, [res, generateMinuteIntervals, realTimeSpinningReservePowerRef]);
 
-  //服務商品繪製
+  // 服務商品繪製
   const setRealTimeSpinningReservePowerChart = useCallback(
     (option) => {
       if (realTimeSpinningReservePowerRef.current) {
@@ -306,7 +330,8 @@ function useHelpers({ refs, setMainState }) {
     },
     [realTimeSpinningReservePowerChartRef, realTimeSpinningReservePowerRef]
   );
-  //服務商品客製化legend觸發事件
+
+  // 服務商品客製化 legend 觸發事件
   function customLegendOnClick(name, chart) {
     const option = chart.getOption();
     const isSelected = !option.legend[0].selected[name];

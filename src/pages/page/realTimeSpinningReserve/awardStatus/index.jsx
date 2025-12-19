@@ -16,9 +16,12 @@ function AwardStatus() {
     awardTableData: [],
     isAwardTableLoading: false,
   });
+
   const awardPowerRef = useRef(null);
   const awardPowerChartRef = useRef(null);
+
   useEchartAutoResize(awardPowerRef, awardPowerChartRef);
+
   const {
     customLegendOnClick,
     getAwardData,
@@ -29,22 +32,24 @@ function AwardStatus() {
     refs: { awardPowerRef, awardPowerChartRef },
     setMainState,
   });
+
   const awardPowerOption = useMemo(
     () => getAwardPowerOption(),
     [getAwardPowerOption]
   );
+
   const customLegend = useMemo(() => {
     return Object.fromEntries(
       awardPowerOption.legend.data.map((key) => [key, true])
     );
   }, [awardPowerOption.legend.data]);
 
-  //取得今日、明日得標資料
+  // 取得今日、明日得標資料
   useEffect(() => {
     getAwardData();
-  }, [getAwardData]);
+  }, [getAwardData, mainState.awardStatus]);
 
-  //當月分帳bar堆疊圖繪製
+  // 當月分帳 bar 堆疊圖繪製
   useEffect(() => {
     if (awardPowerRef.current) {
       const newOption = {
@@ -68,27 +73,29 @@ function AwardStatus() {
       <Flex
         align="center"
         className="section-header pd-x-20 pd-y-10"
-        justify="space-between"
+        // justify="space-between"
       >
         <span>得標狀態</span>
-        <Segmented
-          defaultValue={mainState.awardStatus}
-          options={[
-            { label: "今日", value: "today" },
-            { label: "明日", value: "tomorrow" },
-          ]}
-          onChange={(value) => {
-            setMainState((prevState) => ({
-              ...prevState,
-              awardStatus: value,
-            }));
-            getAwardData();
-          }}
-        />
-        <Flex align="center" className="cloud-status-container">
+        <div className="real-time-spinning-reserve-segmented">
+          <Segmented
+            defaultValue={mainState.awardStatus}
+            options={[
+              { label: "今日", value: "today" },
+              // { label: "明日", value: "tomorrow" },
+            ]}
+            onChange={(value) => {
+              setMainState((prevState) => ({
+                ...prevState,
+                awardStatus: value,
+              }));
+            }}
+          />
+        </div>
+
+        {/* <Flex align="center" className="cloud-status-container">
           <span>雲端連線：</span>
           <span className="status">連線中</span>
-        </Flex>
+        </Flex> */}
       </Flex>
       <Card className="mg-t-16">
         <div
@@ -126,7 +133,7 @@ function AwardStatus() {
           );
         })}
       </Flex>
-      <Table
+      {/* <Table
         className="theme-secondary mg-t-36"
         columns={getAwardSatusTableColumns()}
         dataSource={mainState.awardTableData}
@@ -137,7 +144,7 @@ function AwardStatus() {
         scroll={{
           x: "max-content",
         }}
-      />
+      /> */}
     </ScopeStyle>
   );
 }
