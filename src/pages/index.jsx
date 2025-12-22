@@ -11,7 +11,7 @@ import ShutdownModal from "./shutdownModal";
 import { useHelpers } from "./indexHelper";
 import ScopeStyle from "./indexStyle";
 
-function PageIndex() {
+function PageIndex () {
   const apiDispatch = useDispatch();
   const dispatch = useDispatch();
   const navigate = useNavigate();

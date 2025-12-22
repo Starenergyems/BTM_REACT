@@ -10,13 +10,13 @@ const menuSlice = createSlice({
   name: "menu",
   initialState,
   reducers: {
-    setSiderCollapsed(state, action) {
+    setSiderCollapsed (state, action) {
       state.siderIsCollapsed = action.payload;
     },
-    setSelectedKeys(state, action) {
+    setSelectedKeys (state, action) {
       state.selectedKeys = action.payload;
     },
-    setSeoncdarySelectedKeys(state, action) {
+    setSeoncdarySelectedKeys (state, action) {
       state.seoncdarySelectedKeys = action.payload;
     },
   },

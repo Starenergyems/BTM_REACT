@@ -2,9 +2,9 @@ import styled from "styled-components";
 import { color } from "@/styles/variable/indexStyle";
 
 const style = styled.div`
-  .logo-container {
-    text-align: center;
-    cursor: pointer;
+    .logo-container {
+      text-align: center;
+      cursor: pointer;
 
     .img-logo {
       height: 48px;
@@ -22,6 +22,9 @@ const style = styled.div`
         .ant-menu-title-content {
           border-bottom: 0;
         }
+      }
+      .ant-menu-item::after{
+        display:none;
       }
     }
   }
@@ -49,8 +52,8 @@ const style = styled.div`
         &.ant-menu-submenu-vertical {
           svg {
             transform: ${(props) => {
-              return props.$collapsed && "translateX(-7px)";
-            }};
+    // return props.$collapsed && "translateX(-7px)";
+  }};
           }
         }
       }

@@ -267,6 +267,7 @@ const menuStyles = css`
         .ant-menu-title-content {
           font-size: 20px;
           color: ${color.white};
+                margin-left: 20px;
         }
       }
 
@@ -274,7 +275,7 @@ const menuStyles = css`
         --ant-menu-item-border-radius: 0;
 
         &.ant-menu-submenu-vertical {
-          --ant-menu-icon-margin-inline-end: 20px;
+          // --ant-menu-icon-margin-inline-end: 20px;
         }
         .ant-menu-submenu-title {
           display: flex;
@@ -284,6 +285,7 @@ const menuStyles = css`
           flex: none;
           display: inline-block;
           width: 75px;
+           
         }
         .ant-menu-submenu-arrow {
           display: none;
@@ -304,7 +306,8 @@ const menuStyles = css`
           }
         }
         .ant-menu-title-content {
-          --ant-menu-icon-margin-inline-end: 20px;
+          // --ant-menu-icon-margin-inline-end: 20px;
+          
 
           flex: none;
           display: inline-block;

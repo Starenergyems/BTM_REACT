@@ -4,10 +4,10 @@ import { pagesPathName } from "@/router";
 import logoEng from "@/assets/img/logo-with-eng-word.png";
 import ScopeStyle from "./indexStyle";
 
-function ResetSuccess() {
+function ResetSuccess () {
   const navigate = useNavigate();
 
-  function backToLogin() {
+  function backToLogin () {
     navigate(pagesPathName.login.path);
   }
 
