@@ -8,8 +8,25 @@ import SendEmail from "@/pages/page/sendEmail";
 import ResetSuccess from "./pages/page/resetSuccess";
 
 const pagesPathName = {
+  // 設定頁面
+  setting: {
+    // 系統設定
+    setting: { routeName: "setting", path: "/setting", pathName: "系統設定" },
+    // 排程設定
+    schedule: {
+      routeName: "schedule",
+      path: "/setting/schedule",
+      pathName: "排程設定",
+    },
+    // 需量設定
+    demandRp: {
+      routeName: "demandRp",
+      path: "/setting/demandRp",
+      pathName: "需量設定",
+    },
+  },
   //示範頁
-  demo: { routeName: "demo", path: "/demo" },
+  demo: { routeName: "demo", path: "/demo", pathName: "示範頁" },
   //首頁
   home: { routeName: "", path: "/" },
   //登入頁

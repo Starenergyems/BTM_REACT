@@ -261,6 +261,7 @@ function useHelpers({ refs, setMainState }) {
           type: "line",
           areaStyle: {},
           name: "realTimeSpinningReserve",
+          data: [],
           // data: res(0),
           markArea: {
             data: [[{ name: "10:08", xAxis: "10:08" }, { xAxis: "10:08" }]],
@@ -286,6 +287,7 @@ function useHelpers({ refs, setMainState }) {
         {
           type: "line",
           name: "dispatchPower",
+          data: [],
           // data: res(1),
           markArea: {
             data: [[{ name: "10:08", xAxis: "10:08" }, { xAxis: "10:08" }]],

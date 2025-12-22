@@ -175,7 +175,7 @@ const formStyles = css`
 const layoutStyles = css`
   .ant-layout-sider {
     padding-top: 15px;
-
+    box-shadow: 0px 4px 10px 5px rgba(255, 255, 255, 0.25);
     && {
       --ant-layout-sider-bg: ${color.themeDarkGray};
     }
@@ -184,23 +184,23 @@ const layoutStyles = css`
         display: flex;
         align-items: center;
         justify-content: center;
-
-        .ant-menu-item-icon {
-          --ant-menu-collapsed-icon-size: 25px;
-        }
       }
       .ant-menu-title-content {
         visibility: hidden;
         position: absolute;
       }
+      .ant-menu-submenu {
+        &::after {
+          visibility: hidden;
+        }
+      }
     }
   }
   .ant-layout-sider-children {
     overflow-x: hidden;
-    padding-right: 6px;
-
+    // padding-right: 6px;
     &::before {
-      content: "";
+      // content: "";
       display: block;
       height: 100%;
       width: 6px;
@@ -223,11 +223,12 @@ const menuStyles = css`
       --ant-menu-dark-popup-bg: ${color.themeDarkGray};
       --ant-menu-dark-item-bg: ${color.themeDarkGray};
       --ant-menu-dark-item-hover-color: ${color.lightBlue};
-      --ant-menu-collapsed-icon-size: 24px;
+      --ant-menu-collapsed-icon-size: 40px;
+      --ant-menu-icon-size: 40px;
       --ant-menu-dark-item-hover-bg: ${color.darkerBlueGray};
 
       &.ant-menu-sub {
-        --ant-menu-dark-item-selected-color: ${color.lightBlue};
+        --ant-menu-dark-item-selected-color: ${color.inputGray};
 
         margin-left: 2px;
         box-shadow: 0px 3px 10px #161616;
@@ -239,8 +240,37 @@ const menuStyles = css`
     flex-direction: column;
 
     .ant-menu {
+      .ant-menu-item,
       .ant-menu-submenu {
-        --ant-menu-icon-size: 30px;
+        position: relative;
+
+        margin-bottom: 30px;
+        overflow: visible;
+
+        &::after {
+          content: "";
+          position: absolute;
+          left: 80px;
+          bottom: -15px;
+          display: block;
+          width: 100px;
+          border-bottom: 1px solid ${color.white};
+        }
+        &:last-child {
+          &::after {
+            display: none;
+          }
+        }
+        svg {
+          color: ${color.inputGray};
+        }
+        .ant-menu-title-content {
+          font-size: 20px;
+          color: ${color.white};
+        }
+      }
+
+      .ant-menu-submenu {
         --ant-menu-item-border-radius: 0;
 
         &.ant-menu-submenu-vertical {
@@ -262,7 +292,7 @@ const menuStyles = css`
       .ant-menu-item {
         --ant-menu-dark-item-selected-bg: transparent;
         --ant-menu-item-border-radius: 0;
-        --ant-menu-dark-item-selected-color: ${color.lightBlue};
+        --ant-menu-dark-item-selected-color: ${color.inputGray};
         --ant-menu-item-margin-block: 10px;
 
         display: flex;
@@ -272,9 +302,6 @@ const menuStyles = css`
           .ant-menu-title-content {
             border-bottom: 0;
           }
-        }
-        .ant-menu-item-icon {
-          --ant-menu-icon-size: 30px;
         }
         .ant-menu-title-content {
           --ant-menu-icon-margin-inline-end: 20px;
@@ -287,7 +314,8 @@ const menuStyles = css`
     }
   }
   .ant-menu-submenu {
-    --ant-menu-dark-item-selected-color: ${color.lightBlue};
+    // --ant-menu-dark-item-selected-color: ${color.inputGray};
+    --ant-menu-dark-item-selected-color: ${color.white};
 
     .ant-menu-item {
       --ant-menu-dark-item-selected-bg: transparent;
@@ -295,6 +323,18 @@ const menuStyles = css`
 
       &:hover {
         background-color: var(--ant-menu-dark-item-hover-bg);
+      }
+    }
+  }
+  .ant-menu-submenu-popup {
+    .ant-menu-item {
+      width: 100% !important;
+      margin: 0 !important;
+      color: ${color.white} !important;
+      font-size: 20px;
+      &:hover {
+        border-radius: 8px;
+        color: ${color.lightBlue} !important;
       }
     }
   }

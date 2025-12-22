@@ -7,7 +7,7 @@ const style = styled.div`
     cursor: pointer;
 
     .img-logo {
-      height: 40px;
+      height: 48px;
     }
     .img-logo-with-word {
       height: 63px;
@@ -17,6 +17,7 @@ const style = styled.div`
     .ant-layout-sider-children {
       .other-container {
         margin-top: auto;
+        margin-bottom: 70px;
 
         .ant-menu-title-content {
           border-bottom: 0;
@@ -26,8 +27,10 @@ const style = styled.div`
   }
   .layout-cotent {
     background: ${(props) => props.$layoutBackground};
-    // margin-inline-start: 80px;
+    margin-inline-start: 80px;
     min-height: 100vh;
+    &.no-side-bar{
+      margin-inline-start: 0;}
   }
   .main-menu {
     overflow: auto;

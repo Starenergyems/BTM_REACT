@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useMsal } from "@azure/msal-react";
+import { useLocation } from "react-router-dom";
 import { Layout, Menu } from "antd";
 import { getAccountsInfo } from "@/slices/api/main/accounts/indexHelper";
 import logoSrc from "@/assets/img/logo.png";
@@ -37,6 +38,11 @@ function PageIndex() {
     setModalOpen,
   } = useHelpers({ dispatch, instance, mcalAccounts, navigate, setMainState });
 
+  const location = useLocation();
+
+  // 暫時在 realTimeSpinningReserve 隱藏側邊選單
+  const noSideBar = location?.pathname !== "/realTimeSpinningReserve";
+
   useEffect(() => {
     if (tokenState?.access) {
       apiDispatch(getAccountsInfo()).unwrap();
@@ -52,53 +58,53 @@ function PageIndex() {
       <>
         {/* {accountsState.omRole !== null && ( */}
         <Layout hasSider>
-          {/* <Layout.Header style={{width:"100vw", backgroundColor:"red"}}>
-          </Layout.Header> */}
-          {/* <Layout.Sider
-            className="main-menu"
-            collapsed={menuState.siderIsCollapsed}
-            ref={removeSiderInlineStyle}
-            onCollapse={handleSiderOpen}
-            onMouseEnter={handleOnMouseEnter}
-            onMouseLeave={handleOnMouseLeave}
-          >
-            <div className="logo-container">
-              {menuState.siderIsCollapsed ? (
-                <img
-                  className="img-logo"
-                  src={logoSrc}
-                  alt="logo"
-                  onClick={handleClickLogo}
-                />
-              ) : (
-                <img
-                  className="img-logo-with-word"
-                  src={logoWithWordSrc}
-                  alt="logo with word"
-                  onClick={handleClickLogo}
-                />
-              )}
-            </div>
+          {noSideBar && ( // 暫時在 realTimeSpinningReserve 隱藏側邊選單
+            <Layout.Sider
+              className="main-menu"
+              collapsed={menuState.siderIsCollapsed}
+              ref={removeSiderInlineStyle}
+              onCollapse={handleSiderOpen}
+              onMouseEnter={handleOnMouseEnter}
+              onMouseLeave={handleOnMouseLeave}
+            >
+              <div className="logo-container">
+                {menuState.siderIsCollapsed ? (
+                  <img
+                    className="img-logo mg-t-8"
+                    src={logoSrc}
+                    alt="logo"
+                    onClick={handleClickLogo}
+                  />
+                ) : (
+                  <img
+                    className="img-logo-with-word"
+                    src={logoWithWordSrc}
+                    alt="logo with word"
+                    onClick={handleClickLogo}
+                  />
+                )}
+              </div>
 
-            <Menu
-              className="mg-t-15"
-              items={getMenuMainItems(accountsState?.omRole)}
-              mode="vertical"
-              onSelect={menuOnSelect}
-              selectedKeys={menuState.selectedKeys}
-              theme="dark"
-            />
-            <Menu
-              className="other-container"
-              items={getMenuOtherItems(accountsState?.omRole)}
-              mode="vertical"
-              onClick={menuFeatureOnClick}
-              onSelect={menuFeatureOnSelect}
-              selectedKeys={menuState.seoncdarySelectedKeys}
-              theme="dark"
-            />
-          </Layout.Sider> */}
-          <Layout className="layout-cotent">
+              <Menu
+                className="mg-t-30"
+                items={getMenuMainItems(accountsState?.omRole)}
+                mode="vertical"
+                onSelect={menuOnSelect}
+                selectedKeys={menuState.selectedKeys}
+                theme="dark"
+              />
+              <Menu
+                className="other-container"
+                items={getMenuOtherItems(accountsState?.omRole)}
+                mode="vertical"
+                onClick={menuFeatureOnClick}
+                onSelect={menuFeatureOnSelect}
+                selectedKeys={menuState.seoncdarySelectedKeys}
+                theme="dark"
+              />
+            </Layout.Sider>
+          )}
+          <Layout className={`layout-cotent ${noSideBar ? "" : "no-side-bar"}`}>
             <Outlet />
           </Layout>
         </Layout>
