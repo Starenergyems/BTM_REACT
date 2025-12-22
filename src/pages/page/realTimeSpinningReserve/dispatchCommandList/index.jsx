@@ -11,8 +11,6 @@ function DispatchCommandList() {
         serviceStart: "2025-08-06T00:48:42.472204Z",
         serviceEnd: "2025-08-06T01:48:42.472204Z",
         prev5minAvgPower: 72,
-        actualStart: "2025-08-06T00:42:42.472204Z",
-        actualEnd: "2025-08-06T01:53:42.472204Z",
         fullResponseTime: 4,
         spm: 100,
         serviceEnergy: 56,

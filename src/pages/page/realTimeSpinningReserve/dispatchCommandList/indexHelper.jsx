@@ -1,13 +1,13 @@
 import { useCallback } from "react";
 import { toDateTimeStr } from "@/utils/format";
 
-// useHelpers為最外層function，function內區塊的撰寫順序由上而下為：
-// 1. useCallback需要相依的function
+// useHelpers 為最外層 function，function 內區塊的撰寫順序由上而下為：
+// 1. useCallback 需要相依的 function
 // 2. api function
-// 3. 一般function
+// 3. 一般 function
 function useHelpers({ setMainState }) {
   /* Memoized Common Functions */
-  //表格是否loading
+  // 表格是否 loading
   const setTableLoading = useCallback(
     (isLoading, tableTypeState) => {
       if (setMainState) {
@@ -20,7 +20,7 @@ function useHelpers({ setMainState }) {
     [setMainState]
   );
 
-  //取得得標狀態的表格欄位
+  // 取得得標狀態的表格欄位
   function getDispatchCommandTableColumns() {
     return [
       {
@@ -52,18 +52,6 @@ function useHelpers({ setMainState }) {
           </>
         ),
         align: "center",
-      },
-      {
-        dataIndex: "actualStart",
-        title: "實際開始",
-        align: "center",
-        render: (value) => toDateTimeStr(value, "HH:mm"),
-      },
-      {
-        dataIndex: "actualEnd",
-        title: "實際結束",
-        align: "center",
-        render: (value) => toDateTimeStr(value, "HH:mm"),
       },
       {
         dataIndex: "fullResponseTime",

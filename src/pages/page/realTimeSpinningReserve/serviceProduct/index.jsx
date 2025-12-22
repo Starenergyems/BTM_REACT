@@ -46,7 +46,7 @@ function ServiceProduct() {
   //取得服務商品API資料
   useEffect(() => {
     getServiceProductData();
-  }, [getServiceProductData]);
+  }, [getServiceProductData, mainState.serviceProductStatus]);
 
   //服務商品繪製
   useEffect(() => {
@@ -70,12 +70,12 @@ function ServiceProduct() {
         47.6, 47.8, 48, 48.2, 48.4, 48.6, 48.8, 49, 49.2, 49.4, 49.6, 49.8, 50,
         50.3, 50.6, 50.9, 51.2, 51.5, 51.8, 52.1, 52.4, 52.7,
 
-        // 02:00 - 02:59 (從52下降到28)
-        52, 51.6, 51.2, 50.8, 50.4, 50, 49.6, 49.2, 48.8, 48.4, 48, 47.6, 47.2,
-        46.8, 46.4, 46, 45.6, 45.2, 44.8, 44.4, 44, 43.6, 43.2, 42.8, 42.4, 42,
-        41.6, 41.2, 40.8, 40.4, 40, 39.6, 39.2, 38.8, 38.4, 38, 37.6, 37.2,
-        36.8, 36.4, 36, 35.5, 35, 34.5, 34, 33.5, 33, 32.5, 32, 31.5, 31, 30.5,
-        30, 29.5, 29, 28.5, 28.2, 28.1, 28.05, 28,
+        // 02:00 - 02:59 (從52.8下降到28)
+        52.5, 52, 51.6, 51.2, 50.8, 50.4, 50, 49.6, 49.2, 48.8, 48.4, 48, 47.6,
+        47.2, 46.8, 46.4, 46, 45.6, 45.2, 44.8, 44.4, 44, 43.6, 43.2, 42.8,
+        42.4, 42, 41.6, 41.2, 40.8, 40.4, 40, 39.6, 39.2, 38.8, 38.4, 38, 37.6,
+        37.2, 36.8, 36.4, 36, 35.5, 35, 34.5, 34, 33.5, 33, 32.5, 32, 31.5, 31,
+        30.5, 30, 29.5, 29, 28.5, 28.2, 28.1, 28,
 
         // 03:00 - 03:59 (從28上升到50)
         28, 28.4, 28.8, 29.2, 29.6, 30, 30.4, 30.8, 31.2, 31.6, 32, 32.4, 32.8,
@@ -172,6 +172,7 @@ function ServiceProduct() {
       ].concat(Array(278).fill(0));
       setRealTimeSpinningReservePowerChart(newOption);
     }
+    // setRealTimeSpinningReservePowerChart(awardPowerOption);
   }, [awardPowerOption, setRealTimeSpinningReservePowerChart]);
 
   return (
@@ -182,21 +183,23 @@ function ServiceProduct() {
         justify="space-between"
       >
         <span>服務商品</span>
-        <Segmented
-          defaultValue={mainState.serviceProductStatus}
-          options={[{ label: "即時備轉", value: "realTimeSpinningReserve" }]}
-          onChange={(value) => {
-            setMainState((prevState) => ({
-              ...prevState,
-              serviceProductStatus: value,
-            }));
-            getServiceProductData();
-          }}
-        />
-        <Flex align="center" className="cloud-status-container">
+        <div className="real-time-spinning-reserve-segmented">
+          <Segmented
+            defaultValue={mainState.serviceProductStatus}
+            options={[{ label: "即時備轉", value: "realTimeSpinningReserve" }]}
+            onChange={(value) => {
+              setMainState((prevState) => ({
+                ...prevState,
+                serviceProductStatus: value,
+              }));
+            }}
+          />
+        </div>
+
+        {/* <Flex align="center" className="cloud-status-container">
           <span>服務狀態：</span>
           <span className="status">服務中</span>
-        </Flex>
+        </Flex> */}
       </Flex>
       <Card className="mg-t-16">
         <div

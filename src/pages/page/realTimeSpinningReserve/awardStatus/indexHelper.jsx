@@ -3,14 +3,16 @@ import * as echarts from "echarts";
 import { color } from "@/styles/variable/indexStyle";
 import { customLegendNameMap } from "./indexConfig";
 
-// useHelpers為最外層function，function內區塊的撰寫順序由上而下為：
-// 1. useCallback需要相依的function
+// useHelpers 為最外層 function，function 內區塊的撰寫順序由上而下為：
+// 1. useCallback 需要相依的 function
 // 2. api function
-// 3. 一般function
+// 3. 一般 function
+
 function useHelpers({ refs, setMainState }) {
   const { awardPowerRef, awardPowerChartRef } = refs;
+
   /* Memoized Common Functions */
-  //表格是否loading
+  // 表格是否 loading
   const setTableLoading = useCallback(
     (isLoading, tableTypeState) => {
       if (setMainState) {
@@ -35,11 +37,7 @@ function useHelpers({ refs, setMainState }) {
         }
         return { hour: index, awardCapacity: 0, awardPower: 0 };
       }),
-      // [
-      //   { hour: 2, awardCapacity: 500, awardPower: 500 },
-      //   { hour: 3, awardCapacity: 500, awardPower: 500 },
-      //   { hour: 4, awardCapacity: 500, awardPower: 500 },
-      // ],
+
       tomorrow: [...Array(24)].map((item, index) => {
         if (index === 3) {
           return { hour: 3, awardCapacity: 500, awardPower: 500 };
@@ -57,7 +55,7 @@ function useHelpers({ refs, setMainState }) {
       fetchData[prevState.awardStatus].forEach((item) => {
         obj[`${item.hour}:00`] = item.awardCapacity;
       });
-      obj["id"] = "only-row"; //為了給table元件作為rowKey的識別，因為UI的設計不符合一般table的資料結構
+      obj["id"] = "only-row"; // 為了給 table 元件作為 rowKey 的識別，因為 UI 的設計不符合一般 table 的資料結構
       return {
         ...prevState,
         awardData: {
@@ -69,7 +67,8 @@ function useHelpers({ refs, setMainState }) {
       };
     });
   }, [setMainState]);
-  //取得得標狀態的表格欄位
+
+  // 取得得標狀態的表格欄位
   function getAwardSatusTableColumns() {
     const hourList = [...Array(24)].map((_item, index) => {
       return {
@@ -99,7 +98,8 @@ function useHelpers({ refs, setMainState }) {
       ...hourList,
     ];
   }
-  //當月分帳bar堆疊圖設定檔
+
+  // 當月分帳 bar 堆疊圖設定檔
   const getAwardPowerOption = useCallback(() => {
     return {
       tooltip: {
@@ -219,7 +219,8 @@ function useHelpers({ refs, setMainState }) {
       ],
     };
   }, []);
-  //當月分帳bar堆疊圖設定檔繪製
+
+  // 當月分帳 bar 堆疊圖設定檔繪製
   const setAwardPowerChart = useCallback(
     (option) => {
       if (awardPowerRef.current) {
@@ -238,7 +239,8 @@ function useHelpers({ refs, setMainState }) {
     },
     [awardPowerChartRef, awardPowerRef]
   );
-  //當月分帳bar堆疊圖客製化legend觸發事件
+
+  // 當月分帳 bar 堆疊圖客製化 legend 觸發事件
   function customLegendOnClick(name, chart) {
     const option = chart.getOption();
     const isSelected = !option.legend[0].selected[name];
