@@ -26,7 +26,7 @@ const pagesPathName = {
     },
   },
   // setting: {
-  //   // 系統設定
+  //   // 電費計算
   //   setting: { routeName: "setting", path: "/setting", pathName: "系統設定" },
   //   // 排程設定
   //   schedule: {
