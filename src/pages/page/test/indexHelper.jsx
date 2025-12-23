@@ -15,6 +15,7 @@ function useHelpers ({ refs, setMainState }) {
     realTimeSpinningReservePowerChartRef,
   } = refs;
 
+
   /* Memoized Common Functions */
   // 假資料:讓資料更平滑隨機值不要落差太大
   function smoothRandom (prev, maxDelta = 5, min = 0, max = 60) {
@@ -54,6 +55,7 @@ function useHelpers ({ refs, setMainState }) {
     }
     return result;
   }, []);
+
 
   // 表格是否 loading
   const setTableLoading = useCallback(
@@ -101,14 +103,10 @@ function useHelpers ({ refs, setMainState }) {
         title: index,
         align: "center",
         width: 45,
-        // render: (value) => value[`${index}:00`] ?? "X",
-        render: (value) => "X",
+        render: (value) => value[`${index}:00`] ?? "X",
         onCell: (value) => ({
-          // style: {
-          //   color: value[`${index}:00`] != null ? color.lightBlue : color.gray,
-          // },
           style: {
-            color: color.gray,
+            color: value[`${index}:00`] != null ? color.lightBlue : color.gray,
           },
         }),
       };
@@ -129,6 +127,7 @@ function useHelpers ({ refs, setMainState }) {
 
   const res = (index) => {
     const data = generateMinuteIntervals("10:08");
+    console.log("generateMinuteIntervals data:", data);
     switch (index) {
       case 0:
         return data.map((item) => item.loadPower);
@@ -139,6 +138,7 @@ function useHelpers ({ refs, setMainState }) {
         return [];
     }
   };
+  res(0)
 
   // 服務商品圖設定檔
   const getRealTimeSpinningReservePowerOption = useCallback(() => {
@@ -184,7 +184,7 @@ function useHelpers ({ refs, setMainState }) {
         containLabel: true,
       },
       legend: {
-        data: ["realTimeSpinningReserve", "dispatchPower"],
+        data: ["dispatchPower", "realTimeSpinningReserve", "cbl",],
         selected: Object.keys(customLegendNameMap).reduce((acc, key) => {
           acc[key] = true;
           return acc;
@@ -256,59 +256,110 @@ function useHelpers ({ refs, setMainState }) {
         },
       },
       series: [
+        // 1. realTimeSpinningReserve - 底部系列，帶面積填充
         {
-          type: "line",
-          areaStyle: {},
-          name: "realTimeSpinningReserve",
-          data: [],
-          // data: res(0),
-          markArea: {
-            data: [[{ name: "10:08", xAxis: "10:08" }, { xAxis: "10:08" }]],
-            itemStyle: {
-              borderColor: color.white,
-              borderWidth: 2,
-            },
-            label: {
-              color: color.white,
-              fontSize: 18,
-              distance: 10,
-            },
-          },
-          z: 0,
-          itemStyle: {
-            color: hexToRgba(color.red, 0.7),
-          },
-          lineStyle: {
-            width: 1,
-          },
-          symbol: "none",
-        },
-        {
-          type: "line",
           name: "dispatchPower",
-          data: [],
-          // data: res(1),
-          markArea: {
-            data: [[{ name: "10:08", xAxis: "10:08" }, { xAxis: "10:08" }]],
-            itemStyle: {
-              borderColor: color.white,
-              borderWidth: 2,
-            },
-            label: {
-              color: color.white,
-              fontSize: 18,
-              distance: 10,
-            },
-          },
+          type: 'line',
+          smooth: true,
+          stack: 'total',  // 使用 stack
+          symbol: 'none',
+          symbolSize: 5,
+          sampling: 'average',
           itemStyle: {
-            color: color.lightBlue,
+            color: '#0770FF'
           },
           lineStyle: {
-            width: 2,
+            width: 2, 
+            color: '#0770FF'
           },
-          symbol: "none",
+          markArea: {
+            ...markStyle,
+            data: [[{ name: "10:08", xAxis: "10:08" }, { xAxis: "10:08" }]],
+          },
+          data: []
         },
-      ],
+        // 2. 差值系列 (cbl - realTimeSpinningReserve) - 填充兩者之間的區域
+        {
+          name: "realTimeSpinningReserve",
+          type: 'line',
+          smooth: true,
+          stack: 'total',  // 堆疊在 realTimeSpinningReserve 上
+          symbol: 'none',
+          symbolSize: 5,
+          sampling: 'average',
+          itemStyle: {
+            color: 'rgba(213,72,120,0.8)'
+          },
+          lineStyle: {
+            width: 0,  // 隱藏這條線
+            color: "transparent"
+          },
+          markArea: {
+            ...markStyle,
+            data: [[{ name: "10:08", xAxis: "10:08" }, { xAxis: "10:08" }]],
+          },
+            areaStyle: {
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                {
+                  offset: 0,
+                  color: 'rgba(213,72,120,0.8)'
+                },
+                {
+                  offset: 1,
+                  color: 'rgba(213,72,120,0.3)'
+                }
+              ])
+            },
+          data: []  // 需要計算 cbl - realTimeSpinningReserve 的差值
+        },
+        // 3. cbl - 白色線條在最上方
+        {
+          name: 'cbl',
+          type: 'line',
+          smooth: true,
+          symbol: 'none',
+          symbolSize: 5,
+          sampling: 'average',
+          itemStyle: {
+            color: color.white
+          },
+          lineStyle: {
+            color: color.white,
+            width: 2
+          },
+          markArea: {
+            ...markStyle,
+            data: [[{ name: "10:08", xAxis: "10:08" }, { xAxis: "10:08" }]],
+          },
+          data: []
+        },
+        // 4. dispatchPower - 如果還需要的話
+        // {
+        //   name: "dispatchPower",
+        //   type: 'line',
+        //   smooth: true,
+        //   symbol: 'none',
+        //   symbolSize: 5,
+        //   sampling: 'average',
+        //   itemStyle: {
+        //     color: '#F2597F'
+        //   },
+        //   areaStyle: {
+        //     color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+        //       {
+        //         offset: 0,
+        //         color: 'rgba(213,72,120,0.8)'
+        //       },
+        //       {
+        //         offset: 1,
+        //         color: 'rgba(213,72,120,0.3)'
+        //       }
+        //     ])
+        //   },
+        //   data: []
+        // },
+
+      ]
     };
   }, [generateMinuteIntervals, realTimeSpinningReservePowerRef]);
 
@@ -359,6 +410,20 @@ function useHelpers ({ refs, setMainState }) {
     setRealTimeSpinningReservePowerChart,
     setTableLoading,
   };
+}
+
+
+
+const markStyle = {
+  itemStyle: {
+    borderColor: color.white,
+    borderWidth: 2,
+  },
+  label: {
+    color: color.white,
+    fontSize: 18,
+    distance: 10,
+  },
 }
 
 export { useHelpers };

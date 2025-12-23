@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Card, Flex, Segmented, Table } from "antd";
+import { toDateTimeStr } from "@/utils/format";
 import { color } from "@/styles/variable/indexStyle";
 import { useHelpers } from "./indexHelper";
 import ScopeStyle from "./indexStyle";
 import { customLegendNameMap } from "./indexConfig";
 import { useEchartAutoResize } from "@/hooks/useEchartAutoResize";
+
 
 function AwardStatus() {
   const [mainState, setMainState] = useState({
@@ -77,7 +79,7 @@ function AwardStatus() {
       >
         <span>得標狀態</span>
         <div className="real-time-spinning-reserve-segmented">
-          <Segmented
+          {/* <Segmented
             defaultValue={mainState.awardStatus}
             options={[
               { label: "今日", value: "today" },
@@ -89,7 +91,8 @@ function AwardStatus() {
                 awardStatus: value,
               }));
             }}
-          />
+          /> */}
+          {toDateTimeStr(new Date().setDate(new Date().getDate() + 1), "YYYY/MM/DD")}
         </div>
 
         {/* <Flex align="center" className="cloud-status-container">
