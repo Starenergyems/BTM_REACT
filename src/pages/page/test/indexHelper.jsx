@@ -184,7 +184,8 @@ function useHelpers ({ refs, setMainState }) {
         containLabel: true,
       },
       legend: {
-        data: ["dispatchPower", "realTimeSpinningReserve", "cbl",],
+        // data: ["dispatchPower", "realTimeSpinningReserve", "cbl",],
+        data: ["cbl", "loadCurve", "contribution"],
         selected: Object.keys(customLegendNameMap).reduce((acc, key) => {
           acc[key] = true;
           return acc;
@@ -256,63 +257,7 @@ function useHelpers ({ refs, setMainState }) {
         },
       },
       series: [
-        // 1. realTimeSpinningReserve - 底部系列，帶面積填充
-        {
-          name: "dispatchPower",
-          type: 'line',
-          smooth: true,
-          stack: 'total',  // 使用 stack
-          symbol: 'none',
-          symbolSize: 5,
-          sampling: 'average',
-          itemStyle: {
-            color: '#0770FF'
-          },
-          lineStyle: {
-            width: 2, 
-            color: '#0770FF'
-          },
-          markArea: {
-            ...markStyle,
-            data: [[{ name: "10:08", xAxis: "10:08" }, { xAxis: "10:08" }]],
-          },
-          data: []
-        },
-        // 2. 差值系列 (cbl - realTimeSpinningReserve) - 填充兩者之間的區域
-        {
-          name: "realTimeSpinningReserve",
-          type: 'line',
-          smooth: true,
-          stack: 'total',  // 堆疊在 realTimeSpinningReserve 上
-          symbol: 'none',
-          symbolSize: 5,
-          sampling: 'average',
-          itemStyle: {
-            color: 'rgba(213,72,120,0.8)'
-          },
-          lineStyle: {
-            width: 0,  // 隱藏這條線
-            color: "transparent"
-          },
-          markArea: {
-            ...markStyle,
-            data: [[{ name: "10:08", xAxis: "10:08" }, { xAxis: "10:08" }]],
-          },
-            areaStyle: {
-              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                {
-                  offset: 0,
-                  color: 'rgba(213,72,120,0.8)'
-                },
-                {
-                  offset: 1,
-                  color: 'rgba(213,72,120,0.3)'
-                }
-              ])
-            },
-          data: []  // 需要計算 cbl - realTimeSpinningReserve 的差值
-        },
-        // 3. cbl - 白色線條在最上方
+        // 1. cbl - 白色線條在最上方
         {
           name: 'cbl',
           type: 'line',
@@ -333,6 +278,63 @@ function useHelpers ({ refs, setMainState }) {
           },
           data: []
         },
+        // 2. realTimeSpinningReserve - 底部系列，帶面積填充
+        {
+          name: "loadCurve",
+          type: 'line',
+          smooth: true,
+          stack: 'total',  // 使用 stack
+          symbol: 'none',
+          symbolSize: 5,
+          sampling: 'average',
+          itemStyle: {
+            color: '#0770FF'
+          },
+          lineStyle: {
+            width: 2,
+            color: '#0770FF'
+          },
+          markArea: {
+            ...markStyle,
+            data: [[{ name: "10:08", xAxis: "10:08" }, { xAxis: "10:08" }]],
+          },
+          data: []
+        },
+        // 3. 差值系列 (cbl - loadCurve) - 填充兩者之間的區域
+        {
+          name: "contribution",
+          type: 'line',
+          smooth: true,
+          stack: 'total',  // 堆疊在 loadCurve 上
+          symbol: 'none',
+          symbolSize: 5,
+          sampling: 'average',
+          itemStyle: {
+            color: 'rgba(213,72,120,0.8)'
+          },
+          lineStyle: {
+            width: 0,  // 隱藏這條線
+            color: "transparent"
+          },
+          markArea: {
+            ...markStyle,
+            data: [[{ name: "10:08", xAxis: "10:08" }, { xAxis: "10:08" }]],
+          },
+          areaStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              {
+                offset: 0,
+                color: 'rgba(213,72,120,0.8)'
+              },
+              {
+                offset: 1,
+                color: 'rgba(213,72,120,0.3)'
+              }
+            ])
+          },
+          data: []  // 需要計算 cbl - realTimeSpinningReserve 的差值
+        },
+
         // 4. dispatchPower - 如果還需要的話
         // {
         //   name: "dispatchPower",

@@ -14,18 +14,22 @@ const style = styled.div`
     }
   }
   .ant-layout {
+    overflow-x: hidden;
     .ant-layout-sider-children {
       .other-container {
         margin-top: auto;
-        margin-bottom: 70px;
+        margin-bottom: 1vw;
 
         .ant-menu-title-content {
           border-bottom: 0;
         }
+        .ant-menu-item,.ant-menu-submenu {
+          &::after{
+            display:none;}
+          }
+        }
       }
-      .ant-menu-item::after{
-        display:none;
-      }
+      
     }
   }
   .layout-cotent {
@@ -52,8 +56,8 @@ const style = styled.div`
         &.ant-menu-submenu-vertical {
           svg {
             transform: ${(props) => {
-    // return props.$collapsed && "translateX(-7px)";
-  }};
+              // return props.$collapsed && "translateX(-7px)";
+            }};
           }
         }
       }

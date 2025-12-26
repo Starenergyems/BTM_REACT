@@ -101,15 +101,15 @@ function useHelpers ({ refs, setMainState }) {
         title: index,
         align: "center",
         width: 45,
-        // render: (value) => value[`${index}:00`] ?? "X",
-        render: (value) => "X",
+        render: (value) => value[`${index}:00`] ?? "X",
+        // render: (value) => "X",
         onCell: (value) => ({
-          // style: {
-          //   color: value[`${index}:00`] != null ? color.lightBlue : color.gray,
-          // },
           style: {
-            color: color.gray,
+            color: value[`${index}:00`] != null ? color.lightBlue : color.gray,
           },
+          // style: {
+          //   color: color.gray,
+          // },
         }),
       };
     });

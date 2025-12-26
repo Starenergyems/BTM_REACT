@@ -5,7 +5,6 @@ import {
   setSeoncdarySelectedKeys,
   setSiderCollapsed,
 } from "@/slices/menu";
-import { SystemAlertIcon, HeartBeatIcon, PersonIcon } from "@/components/units/icons";
 import { clearToken } from "@/slices/api/main/token";
 
 // 取得路徑與設定左側選單項目
@@ -37,26 +36,35 @@ function useHelpers ({
         children: getesPathName(pagesPathName.setting),
       },
       {
-        key: "calculation",
+        key: "bill",
         icon: <Icon icon="tabler:cash-register" />,
         label: "電費計算",
-        children: getesPathName(pagesPathName.calculation),
+        children: getesPathName(pagesPathName.bill),
       },
       {
-        key: "system",
+        key: "storage",
+        icon: <Icon icon="la:car-battery" />,
+        label: "儲能系統",
+      },
+      {
+        key: "solar",
         icon: <Icon icon="ion:sunny" />,
-        label: "系統資訊",
-        children: getesPathName(pagesPathName.system),
+        label: "太陽能",
       },
       {
-        key: "systemStorageAlert",
-        icon: <SystemAlertIcon className="iconify iconify--ion ant-menu-item-icon" />,
+        key: "charger",
+        icon: <Icon icon="streamline-ultimate:charger-1-bold" />,
+        label: "充電樁",
+      },
+      {
+        key: "alarm",
+        icon: <Icon icon="icon-park-outline:alarm" />,
         label: "告警系統",
-        children: getesPathName(pagesPathName.systemStorageAlert),
+        children: getesPathName(pagesPathName.alarm),
       },
       {
         key: "realTimeSpinningReserve",
-        icon: <HeartBeatIcon className="iconify iconify--ion ant-menu-item-icon" />,
+        icon: <Icon icon="lucide-lab:houses" />,
         label: "輔助服務",
       },
       // {
@@ -88,13 +96,15 @@ function useHelpers ({
     const items = [
       {
         key: "PersonIcon",
-        icon: <PersonIcon className="iconify iconify--ion ant-menu-item-icon" />,
+        icon: <Icon icon="bi:person-circle" />,
         label: "使用者資訊",
+        children: getesPathName(pagesPathName.profile),
       },
       {
         key: "systemSettings",
         icon: <Icon icon="mdi:gear" />,
         label: "系統管理",
+        children: getesPathName(pagesPathName.systemSetting),
       },
       // {
       //   key: "logout",

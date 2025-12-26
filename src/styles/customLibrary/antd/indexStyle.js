@@ -174,7 +174,7 @@ const formStyles = css`
 /* Layout */
 const layoutStyles = css`
   .ant-layout-sider {
-    padding-top: 15px;
+    padding-top: 20px;
     box-shadow: 0px 4px 10px 5px rgba(255, 255, 255, 0.25);
     && {
       --ant-layout-sider-bg: ${color.themeDarkGray};
@@ -212,8 +212,6 @@ const layoutStyles = css`
   }
   .ant-layout-sider-trigger {
     --ant-layout-trigger-bg: #181a25;
-  }
-  .ant-menu {
   }
 `;
 /* Menu */

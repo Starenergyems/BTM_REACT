@@ -18,62 +18,51 @@ const pagesPathName = {
     // 排程設定
     schedule: {
       routeName: "schedule",
-      path: "/setting/schedule",
+      path: "setting/schedule",
       pathName: "排程設定",
     },
     // 需量設定
     demandRp: {
       routeName: "demandRp",
-      path: "/setting/demandRp",
+      path: "setting/demandRp",
       pathName: "需量設定",
     },
   },
-  calculation: {
+  bill: {
+    // 儲能系統
+    storageBill: { routeName: "storageBill", path: "bill/storage", pathName: "儲能系統" },
     // 太陽能
-    solarEnergy: { routeName: "solarEnergy", path: "/solar-energy", pathName: "太陽能" },
+    solarBill: { routeName: "solarBill", path: "bill/solar", pathName: "太陽能" },
     // 充電樁
-    chargingPile: {
-      routeName: "chargingPile",
-      path: "/charging-pile",
+    chargerBill: {
+      routeName: "chargerBill",
+      path: "bill/charger",
       pathName: "充電樁",
     },
-    // 需量設定
-    systemStorage: {
-      routeName: "systemStorage",
-      path: "/system-storage",
-      pathName: "儲能系統",
-    },
+    // 報表下載
+    report: { routeName: "report", path: "bill/report", pathName: "報表下載" },
   },
-
-  // 系統資訊
-  system: {
-    // 太陽能
-    solarEnergyAlert: { routeName: "solarEnergyAlert", path: "/solar-energy-alert", pathName: "1a 太陽能告警" },
-    // 充電樁
-    chargingPileAlert: {
-      routeName: "chargingPileAlert",
-      path: "/charging-pile-alert",
-      pathName: "2a 充電樁告警",
-    },
-    // 需量設定
-    systemStorage: {
-      routeName: "systemStorageAlert",
-      path: "/system-storage-alert",
-      pathName: "3a 儲能櫃告警",
-    },
+  // 儲能系統
+  storage: { routeName: "storage", path: "/storage", pathName: "儲能系統" },
+  // 太陽能
+  solar: { routeName: "solar", path: "/solar", pathName: "太陽能" },
+  // 充電樁
+  charger: {
+    routeName: "charger",
+    path: "/charger",
+    pathName: "充電樁",
   },
-
   // 告警系統
-  systemStorageAlert: {
-    rightNowAlert: {
-      routeName: "rightNowAlert",
-      path: "/right-now-alert",
-      pathName: "1即時告警",
+  alarm: {
+    real: {
+      routeName: "real",
+      path: "alarm/real",
+      pathName: "即時告警",
     },
-    historyAlert: {
-      routeName: "historyAlert",
-      path: "/history-alert",
-      pathName: "2歷史告警",
+    historic: {
+      routeName: "historic",
+      path: "alarm/historic",
+      pathName: "歷史告警",
     },
   },
   // 輔助服務 - 即時備轉
@@ -81,9 +70,21 @@ const pagesPathName = {
     routeName: "realTimeSpinningReserve",
     path: "/realTimeSpinningReserve",
   },
-  personalSettings: {
-    routeName: "personalSettings",
-    path: "/personalSettings",
+  // 個人資料
+  profile: {
+    personal: {
+      routeName: "personal",
+      path: "/personal",
+      pathName: "個人資料",
+    }
+  },
+  // 權限管理設定
+  systemSetting: {
+    system: {
+      routeName: "systemSettings",
+      path: "/systemSettings",
+      pathName: "權限管理設定",
+    },
   },
   // 示範頁
   demo: { routeName: "demo", path: "/demo", pathName: "示範頁" },
@@ -113,32 +114,131 @@ const routes = [
     children: [
       {
         // 測試頁
-        path: pagesPathName.test.routeName,
+        path: pagesPathName.test.path,
         async lazy () {
           return getLazyComponent(await import("@/pages/page/test/index"));
         },
       },
       {
-        //首頁
+        // 示範頁
+        path: pagesPathName.demo.path,
+        async lazy () {
+          return getLazyComponent(await import("@/pages/page/demo/index"));
+        },
+      },
+      {
+        // 首頁
         path: "",
         async lazy () {
           return getLazyComponent(await import("@/pages/page/home/index"));
         },
       },
       {
-        //示範頁
-        path: pagesPathName.demo.routeName,
+        // 系統設定
+        path: pagesPathName.setting.setting.path,
         async lazy () {
-          return getLazyComponent(await import("@/pages/page/demo/index"));
+          return getLazyComponent(await import("@/pages/page/setting/index"));
         },
       },
       {
-        //即時備轉頁
+        // 排程設定
+        path: pagesPathName.setting.schedule.path,
+        async lazy () {
+          return getLazyComponent(await import("@/pages/page/schedule/index"));
+        },
+      },
+      {
+        // 需量設定
+        path: pagesPathName.setting.demandRp.path,
+        async lazy () {
+          return getLazyComponent(await import("@/pages/page/demandRp/index"));
+        },
+      },
+      {
+        // 儲能系統
+        path: pagesPathName.bill.storageBill.path,
+        async lazy () {
+          return getLazyComponent(await import("@/pages/page/storageBill/index"));
+        },
+      },
+      {
+        // 太陽能
+        path: pagesPathName.bill.solarBill.path,
+        async lazy () {
+          return getLazyComponent(await import("@/pages/page/solarBill/index"));
+        },
+      },
+      {
+        // 充電樁
+        path: pagesPathName.bill.chargerBill.path,
+        async lazy () {
+          return getLazyComponent(await import("@/pages/page/chargerBill/index"));
+        },
+      },
+      {
+        // 報表下載
+        path: pagesPathName.bill.report.path,
+        async lazy () {
+          return getLazyComponent(await import("@/pages/page/report/index"));
+        },
+      },
+      {
+        // 儲能系統
+        path: pagesPathName.storage.path,
+        async lazy () {
+          return getLazyComponent(await import("@/pages/page/storage/index"));
+        },
+      },
+      {
+        // 太陽能
+        path: pagesPathName.solar.path,
+        async lazy () {
+          return getLazyComponent(await import("@/pages/page/solar/index"));
+        },
+      },
+      {
+        // 充電樁
+        path: pagesPathName.charger.path,
+        async lazy () {
+          return getLazyComponent(await import("@/pages/page/charger/index"));
+        },
+      },
+      {
+        // 即時告警
+        path: pagesPathName.alarm.real.path,
+        async lazy () {
+          return getLazyComponent(await import("@/pages/page/real/index"));
+        },
+      },
+      {
+        // 歷史告警
+        path: pagesPathName.alarm.historic.path,
+        async lazy () {
+          return getLazyComponent(await import("@/pages/page/historic/index"));
+        },
+      },
+
+      {
+        // 即時備轉頁
         path: pagesPathName.realTimeSpinningReserve.routeName,
         async lazy () {
           return getLazyComponent(
             await import("@/pages/page/realTimeSpinningReserve/index")
           );
+        },
+      },
+      {
+        // 個人資料
+        path: pagesPathName.profile.personal.path,
+        async lazy () {
+          return getLazyComponent(await import("@/pages/page/personal/index"));
+        },
+      },
+      {
+        // 權限管理設定
+        path: pagesPathName.systemSetting.system.path,
+        async lazy () {
+          return getLazyComponent(await import("@/pages/page/system/index"));
         },
       },
     ],

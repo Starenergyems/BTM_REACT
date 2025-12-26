@@ -3,7 +3,7 @@ import { color } from "@/styles/variable/indexStyle";
 
 //初始值
 const layoutState = {
-  background: `linear-gradient(180deg, #596f7c, ${color.themeBlack})`,
+  background: `linear-gradient(180deg, ${color.themeBlue} 0%,  ${color.themeBlack} 100%)`,
 };
 
 const layoutSlice = createSlice({

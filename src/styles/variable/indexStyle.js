@@ -4,6 +4,7 @@ import { hexToRgba } from "../function";
 const color = {
   white: "#ffffff",
   black: "#000000",
+  themeBlue:"#658393",
   themeBlack: "#111525",
   themeDarkGray: "#2B3043",
   darkerGray: "#313131",

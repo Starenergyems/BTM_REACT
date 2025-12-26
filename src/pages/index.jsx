@@ -54,6 +54,7 @@ function PageIndex () {
       $layoutBackground={layoutState.background}
       $collapsed={menuState.siderIsCollapsed}
     >
+      {console.log('layoutState', layoutState)}
       {/* {tokenState.access ? ( */}
       <>
         {/* {accountsState.omRole !== null && ( */}
@@ -70,7 +71,7 @@ function PageIndex () {
               <div className="logo-container">
                 {menuState.siderIsCollapsed ? (
                   <img
-                    className="img-logo mg-t-8"
+                    className="img-logo"
                     src={logoSrc}
                     alt="logo"
                     onClick={handleClickLogo}

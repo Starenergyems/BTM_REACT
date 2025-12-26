@@ -12,13 +12,10 @@ const style = styled.div`
       }
       return "transparent";
     } else if (props?.$bgColorLinearGradient?.constructor === Object) {
-      return `linear-gradient(to ${
-        props?.$bgColorLinearGradient?.direction || "bottom"
-      }, ${props?.$bgColorLinearGradient?.startColor || "#38404e"} ${
-        props?.$bgColorLinearGradient?.startRange || "200px"
-      }, ${props?.$bgColorLinearGradient?.endColor || "transparent"} ${
-        props?.$bgColorLinearGradient?.endRange || "0"
-      })`;
+      return `linear-gradient(to ${props?.$bgColorLinearGradient?.direction || "bottom"
+        }, ${props?.$bgColorLinearGradient?.startColor || "#38404e"} ${props?.$bgColorLinearGradient?.startRange || "200px"
+        }, ${props?.$bgColorLinearGradient?.endColor || "transparent"} ${props?.$bgColorLinearGradient?.endRange || "0"
+        })`;
     }
   }};
   .icon-back {
@@ -33,6 +30,7 @@ const style = styled.div`
     height: 36px;
     position: relative;
     text-align: center;
+    margin-top: 70px;
 
     &::before {
       content: "";
@@ -57,7 +55,7 @@ const style = styled.div`
       transform: translate(-36px, -50%);
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: start;
       white-space: nowrap;
       min-width: 320px;
 

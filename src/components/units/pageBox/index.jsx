@@ -33,7 +33,7 @@ function PageBox({
         />
       )}
       <div
-        className="header mg-l-20-minus mg-t-25"
+        className="header mg-l-20-minus"
         style={{ minWidth: "514px", ...headerStyle }}
       >
         {headerTitle && (

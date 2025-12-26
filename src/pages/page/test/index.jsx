@@ -59,26 +59,26 @@ function ServiceProduct () {
       // cbl 數據 - 固定在 50
       const cblData = Array(609).fill(50);
 
-      // dispatchPowerData 數據 - 波浪型
-      const dispatchPowerData = Array(609).fill(0).map((_, index) => {
+      // contributionData 數據 - 波浪型
+      const contributionData = Array(609).fill(0).map((_, index) => {
         const hour = index / 60; // 當前小時
         // 使用多個正弦波疊加創造自然波動
         const wave1 = Math.sin(hour * 0.5) * 9;        // 慢波浪，振幅 5
         const wave2 = Math.sin(hour * 1.2) * 3;        // 中波浪，振幅 3
         const wave3 = Math.sin(hour * 3) * 1.5;        // 快波浪，振幅 1.5
         const base = 42;                               // 基準線在 42
-        
+
         return Math.max(35, Math.min(55, base + wave1 + wave2 + wave3));
       });
 
 
       // 計算差值數據 (cbl - realTimeSpinningReserve)
-      const realTimeSpinningReserveData = cblData.map((cbl, index) => cbl - dispatchPowerData[index]);
+      const loadCurveData = cblData.map((cbl, index) => cbl - contributionData[index]);
 
       // 設定各系列數據
-      newOption.series[0].data = dispatchPowerData;
-      newOption.series[1].data = realTimeSpinningReserveData;    // realTimeSpinningReserve 底部                   
-      newOption.series[2].data = cblData;                        // cbl 白色線
+      newOption.series[0].data = cblData;
+      newOption.series[1].data = contributionData;
+      newOption.series[2].data = loadCurveData;
 
       setRealTimeSpinningReservePowerChart(newOption);
     }
