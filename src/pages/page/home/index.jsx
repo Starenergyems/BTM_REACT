@@ -18,9 +18,7 @@ function Home() {
         </Col>
         <Col xs={24} lg={12}>
           <div className="block block1">
-            <HomeBox title="Welcome to BTM Power Management System">
-              123
-            </HomeBox>
+            <HomeBox title="Welcome to BTM Power Management System">aa</HomeBox>
           </div>
         </Col>
       </Row>
