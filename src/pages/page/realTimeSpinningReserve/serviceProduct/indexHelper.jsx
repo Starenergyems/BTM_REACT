@@ -3,13 +3,14 @@ import * as echarts from "echarts";
 import { hexToRgba } from "@/styles/function";
 import { color } from "@/styles/variable/indexStyle";
 import { customLegendNameMap } from "./indexConfig";
+import { Position } from "reactflow";
 
 // useHelpers 為最外層 function，function 內區塊的撰寫順序由上而下為：
 // 1. useCallback 需要相依的 function
 // 2. api function
 // 3. 一般function
 
-function useHelpers ({ refs, setMainState }) {
+function useHelpers({ refs, setMainState }) {
   const {
     realTimeSpinningReservePowerRef,
     realTimeSpinningReservePowerChartRef,
@@ -17,7 +18,7 @@ function useHelpers ({ refs, setMainState }) {
 
   /* Memoized Common Functions */
   // 假資料:讓資料更平滑隨機值不要落差太大
-  function smoothRandom (prev, maxDelta = 5, min = 0, max = 60) {
+  function smoothRandom(prev, maxDelta = 5, min = 0, max = 60) {
     const delta = Math.floor(Math.random() * maxDelta * 2) - maxDelta;
     let next = prev + delta;
     next = Math.max(min, Math.min(max, next));
@@ -95,21 +96,21 @@ function useHelpers ({ refs, setMainState }) {
   }, [generateMinuteIntervals, setMainState]);
 
   // 取得得標狀態的表格欄位
-  function getSpmTableColumns () {
+  function getSpmTableColumns() {
     const hourList = [...Array(24)].map((_item, index) => {
       return {
         title: index,
         align: "center",
         width: 45,
-        render: (value) => value[`${index}:00`] ?? "X",
-        // render: (value) => "X",
-        onCell: (value) => ({
-          style: {
-            color: value[`${index}:00`] != null ? color.lightBlue : color.gray,
-          },
+        // render: (value) => value[`${index}:00`] ?? "X",
+        render: () => "X",
+        onCell: () => ({
           // style: {
-          //   color: color.gray,
+          //   color: value[`${index}:00`] != null ? color.lightBlue : color.gray,
           // },
+          style: {
+            color: color.gray,
+          },
         }),
       };
     });
@@ -129,6 +130,7 @@ function useHelpers ({ refs, setMainState }) {
 
   const res = (index) => {
     const data = generateMinuteIntervals("10:08");
+    console.log("generateMinuteIntervals data:", data);
     switch (index) {
       case 0:
         return data.map((item) => item.loadPower);
@@ -139,6 +141,7 @@ function useHelpers ({ refs, setMainState }) {
         return [];
     }
   };
+  res(0);
 
   // 服務商品圖設定檔
   const getRealTimeSpinningReservePowerOption = useCallback(() => {
@@ -150,7 +153,7 @@ function useHelpers ({ refs, setMainState }) {
         textStyle: {
           color: color.white,
         },
-        formatter (params) {
+        formatter(params) {
           const numberFormat = new Intl.NumberFormat("en-US", {
             maximumFractionDigits: 3,
           });
@@ -158,11 +161,13 @@ function useHelpers ({ refs, setMainState }) {
             let tooltipContent = `${params[0].axisValue}`;
             const template = (item, unitStr) => {
               if (item) {
-                return `<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;min-width:130px;"><span>${item.marker
-                  } ${customLegendNameMap[item.seriesName] || item.seriesName
-                  }</span> <span class="value">${numberFormat.format(
-                    item.data
-                  )} ${unitStr}</span></div>`;
+                return `<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;min-width:130px;"><span>${
+                  item.marker
+                } ${
+                  customLegendNameMap[item.seriesName] || item.seriesName
+                }</span> <span class="value">${numberFormat.format(
+                  item.data
+                )} ${unitStr}</span></div>`;
               }
             };
             params.forEach((item) => {
@@ -180,11 +185,11 @@ function useHelpers ({ refs, setMainState }) {
         top: 50,
         left: 10,
         right: 38,
-        bottom: 40,
+        bottom: 70,
         containLabel: true,
       },
       legend: {
-        data: ["realTimeSpinningReserve", "dispatchPower"],
+        data: ["cbl", "loadCurve", "contribution"],
         selected: Object.keys(customLegendNameMap).reduce((acc, key) => {
           acc[key] = true;
           return acc;
@@ -231,8 +236,8 @@ function useHelpers ({ refs, setMainState }) {
       },
       yAxis: {
         min: 0,
-        max: 60,
-        inerval: 10,
+        max: 1200,
+        inerval: 200,
         name: "容量 (kW)",
         nameLocation: "end",
         nameTextStyle: {
@@ -256,57 +261,160 @@ function useHelpers ({ refs, setMainState }) {
         },
       },
       series: [
+        // 1. cbl - 白色線條在最上方
         {
+          name: "cbl",
           type: "line",
-          areaStyle: {},
-          name: "realTimeSpinningReserve",
-          data: [],
-          // data: res(0),
-          markArea: {
-            data: [[{ name: "10:08", xAxis: "10:08" }, { xAxis: "10:08" }]],
-            itemStyle: {
-              borderColor: color.white,
-              borderWidth: 2,
-            },
-            label: {
-              color: color.white,
-              fontSize: 18,
-              distance: 10,
-            },
-          },
-          z: 0,
+          smooth: true,
+          symbol: "none",
+          symbolSize: 5,
+          sampling: "average",
           itemStyle: {
-            color: hexToRgba(color.red, 0.7),
+            color: color.white,
           },
           lineStyle: {
-            width: 1,
+            color: color.white,
+            width: 2,
           },
-          symbol: "none",
-        },
-        {
-          type: "line",
-          name: "dispatchPower",
+          markLine: {
+            symbol: "none",
+            data: [
+              {
+                name: "調度指令下達",
+                xAxis: "06:50",
+                ...markDashedStyle,
+              },
+              {
+                name: "服務開始",
+                xAxis: "07:00",
+                ...markSolidStyle,
+              },
+
+              {
+                name: "服務結束",
+                xAxis: "12:00",
+                ...markSolidStyle,
+              },
+              {
+                name: "下次待命開始",
+                xAxis: "14:00",
+                ...markDashedStyle,
+                label: {
+                  ...markDashedStyle.label,
+                  // offset: [0, 50],
+                },
+              },
+            ],
+          },
           data: [],
-          // data: res(1),
-          markArea: {
-            data: [[{ name: "10:08", xAxis: "10:08" }, { xAxis: "10:08" }]],
-            itemStyle: {
-              borderColor: color.white,
-              borderWidth: 2,
-            },
-            label: {
-              color: color.white,
-              fontSize: 18,
-              distance: 10,
-            },
-          },
+        },
+        // 2. realTimeSpinningReserve - 底部系列，帶面積填充
+        {
+          name: "loadCurve",
+          type: "line",
+          smooth: true,
+          stack: "total", // 使用 stack
+          symbol: "none",
+          symbolSize: 5,
+          sampling: "average",
           itemStyle: {
-            color: color.lightBlue,
+            color: "#0770FF",
           },
           lineStyle: {
             width: 2,
+            color: "#0770FF",
           },
+          markLine: {
+            symbol: "none",
+            data: [
+              {
+                name: "調度指令下達",
+                xAxis: "06:50",
+                ...markDashedStyle,
+              },
+              {
+                name: "服務開始",
+                xAxis: "07:00",
+                ...markSolidStyle,
+              },
+
+              {
+                name: "服務結束",
+                xAxis: "12:00",
+                ...markSolidStyle,
+              },
+              {
+                name: "下次待命開始",
+                xAxis: "14:00",
+                ...markDashedStyle,
+                label: {
+                  ...markDashedStyle.label,
+                  // offset: [0, 50],
+                },
+              },
+            ],
+          },
+          data: [],
+        },
+        // 3. 差值系列 (cbl - loadCurve) - 填充兩者之間的區域
+        {
+          name: "contribution",
+          type: "line",
+          smooth: true,
+          stack: "total", // 堆疊在 loadCurve 上
           symbol: "none",
+          symbolSize: 5,
+          sampling: "average",
+          itemStyle: {
+            color: "rgba(213,72,120,0.8)",
+          },
+          lineStyle: {
+            width: 0, // 隱藏這條線
+            color: "transparent",
+          },
+          markLine: {
+            symbol: "none",
+            data: [
+              {
+                name: "調度指令下達",
+                xAxis: "06:50",
+                ...markDashedStyle,
+              },
+              {
+                name: "服務開始",
+                xAxis: "07:00",
+                ...markSolidStyle,
+              },
+
+              {
+                name: "服務結束",
+                xAxis: "12:00",
+                ...markSolidStyle,
+              },
+              {
+                name: "下次待命開始",
+                xAxis: "14:00",
+                ...markDashedStyle,
+                label: {
+                  ...markDashedStyle.label,
+                  // offset: [0, 50],
+                },
+              },
+            ],
+          },
+          areaStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              {
+                offset: 0,
+                color: "rgba(213,72,120,0.8)",
+              },
+              {
+                offset: 1,
+                color: "rgba(213,72,120,0.3)",
+              },
+            ]),
+          },
+          data: [], // 需要計算 cbl - realTimeSpinningReserve 的差值
         },
       ],
     };
@@ -333,7 +441,7 @@ function useHelpers ({ refs, setMainState }) {
   );
 
   // 服務商品客製化 legend 觸發事件
-  function customLegendOnClick (name, chart) {
+  function customLegendOnClick(name, chart) {
     const option = chart.getOption();
     const isSelected = !option.legend[0].selected[name];
     chart.dispatchAction({
@@ -360,5 +468,36 @@ function useHelpers ({ refs, setMainState }) {
     setTableLoading,
   };
 }
+
+const markSolidStyle = {
+  lineStyle: {
+    color: color.white,
+    width: 2,
+    type: "solid",
+  },
+  label: {
+    show: true,
+    color: color.white,
+    fontSize: 18,
+    formatter: "{b}",
+    offset: [0, 0],
+  },
+};
+
+const markDashedStyle = {
+  lineStyle: {
+    color: color.red,
+    width: 2,
+    type: "dashed",
+  },
+  label: {
+    show: true,
+    position: "start",
+    color: color.red,
+    fontSize: 18,
+    formatter: "{b}",
+    offset: [0, 35],
+  },
+};
 
 export { useHelpers };

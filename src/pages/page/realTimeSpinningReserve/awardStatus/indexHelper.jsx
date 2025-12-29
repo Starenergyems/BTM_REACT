@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import * as echarts from "echarts";
 import { color } from "@/styles/variable/indexStyle";
 import { customLegendNameMap } from "./indexConfig";
+import { api } from "@/slices/api/setting";
 
 // useHelpers 為最外層 function，function 內區塊的撰寫順序由上而下為：
 // 1. useCallback 需要相依的 function
@@ -25,30 +26,17 @@ function useHelpers({ refs, setMainState }) {
     [setMainState]
   );
 
-  const getAwardData = useCallback(() => {
-    const fetchData = {
-      today: [...Array(24)].map((item, index) => {
-        if (index === 2) {
-          return { hour: 2, awardCapacity: 450, awardPower: 450 };
-        } else if (index === 3) {
-          return { hour: 3, awardCapacity: 550, awardPower: 550 };
-        } else if (index === 4) {
-          return { hour: 4, awardCapacity: 600, awardPower: 600 };
-        }
-        return { hour: index, awardCapacity: 0, awardPower: 0 };
-      }),
-
-      tomorrow: [...Array(24)].map((item, index) => {
-        if (index === 3) {
-          return { hour: 3, awardCapacity: 500, awardPower: 500 };
-        } else if (index === 4) {
-          return { hour: 4, awardCapacity: 500, awardPower: 500 };
-        } else if (index === 5) {
-          return { hour: 5, awardCapacity: 500, awardPower: 500 };
-        }
-        return { hour: index, awardCapacity: 0, awardPower: 0 };
-      }),
-    };
+  const getAwardData = useCallback(async () => {
+    // const fetchData = {
+    //   today: [...Array(24)].map((item, index) => {
+    //     if (index >= 7 && index <= 12) {
+    //       return { hour: index, awardCapacity: 500, awardPower: 500 };
+    //     }
+    //     return { hour: index, awardCapacity: 0, awardPower: 0 };
+    //   }),
+    // };
+    const fetchData = await api.get("vpp-dr/award-status?date=2025-12-30");
+    console.log("fetchData", fetchData);
 
     setMainState((prevState) => {
       const obj = {};
@@ -61,7 +49,6 @@ function useHelpers({ refs, setMainState }) {
         awardData: {
           ...prevState.awardData,
           today: fetchData.today,
-          tomorrow: fetchData.tomorrow,
         },
         awardTableData: [obj],
       };

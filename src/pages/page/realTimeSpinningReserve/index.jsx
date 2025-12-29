@@ -11,7 +11,7 @@ function RealTimeSpinningReserve() {
       {/* 服務商品 */}
       <ServiceProduct />
       {/* 調度指令列表 */}
-      <DispatchCommandList />
+      {/* <DispatchCommandList /> */}
     </ScopeStyle>
   );
 }

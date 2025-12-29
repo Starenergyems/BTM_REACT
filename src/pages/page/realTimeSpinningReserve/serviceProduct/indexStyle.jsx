@@ -30,7 +30,7 @@ const style = styled.div`
     }
   }
   .revenue-sharing-bar-stack-chart {
-    min-height: 300px;
+    min-height: 350px;
   }
   .custom-legend {
     position: relative;

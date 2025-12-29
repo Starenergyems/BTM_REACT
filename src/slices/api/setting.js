@@ -24,11 +24,14 @@ const statusCode = {
 };
 
 //本機開發使用vite proxy，因此使用相對路徑即可，dev及production使用絕對路徑
-const baseURL =
-  VITE_WEB_URL && VITE_WEB_URL.includes(location.origin)
-    ? VITE_API_BASEURL
-    : "/dev";
+// const baseURL =
+//   VITE_WEB_URL && VITE_WEB_URL.includes(location.origin)
+//     ? VITE_API_BASEURL
+//     : "/dev";
 
+const baseURL = VITE_API_BASEURL;
+
+console.log("baseURL", baseURL, VITE_API_BASEURL);
 // 初始化設定
 const api = axios.create({
   baseURL,

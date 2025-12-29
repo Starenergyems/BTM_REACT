@@ -7,8 +7,7 @@ import ScopeStyle from "./indexStyle";
 import { customLegendNameMap } from "./indexConfig";
 import { useEchartAutoResize } from "@/hooks/useEchartAutoResize";
 
-
-function AwardStatus () {
+function AwardStatus() {
   const [mainState, setMainState] = useState({
     awardData: {
       today: [],
@@ -75,7 +74,7 @@ function AwardStatus () {
       <Flex
         align="center"
         className="section-header pd-x-20 pd-y-10"
-      // justify="space-between"
+        // justify="space-between"
       >
         <span>得標狀態</span>
         <div className="real-time-spinning-reserve-segmented">
@@ -93,7 +92,7 @@ function AwardStatus () {
             }}
           /> */}
           {/* {toDateTimeStr(new Date().setDate(new Date().getDate() + 1), "YYYY/MM/DD")} */}
-          2025/12/23
+          {toDateTimeStr(new Date(), "YYYY/MM/DD")}
         </div>
 
         {/* <Flex align="center" className="cloud-status-container">
