@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import * as echarts from "echarts";
 import { color } from "@/styles/variable/indexStyle";
 import { customLegendNameMap } from "./indexConfig";
-import { api } from "@/slices/api/setting";
+// import { api } from "@/slices/api/setting";
 
 // useHelpers 為最外層 function，function 內區塊的撰寫順序由上而下為：
 // 1. useCallback 需要相依的 function
@@ -35,24 +35,30 @@ function useHelpers({ refs, setMainState }) {
     //     return { hour: index, awardCapacity: 0, awardPower: 0 };
     //   }),
     // };
-    const fetchData = await api.get("vpp-dr/award-status?date=2025-12-30");
-    console.log("fetchData", fetchData);
+    // const fetchData = await api.get("vpp-dr/award-status?date=2025-12-30");
+    // console.log("fetchData", fetchData);
 
-    setMainState((prevState) => {
-      const obj = {};
-      fetchData[prevState.awardStatus].forEach((item) => {
-        obj[`${item.hour}:00`] = item.awardCapacity;
+    const fetchData = customLegendNameMap.res;
+    if (fetchData?.status === 200) {
+      console.log("fetchData", fetchData, fetchData.data.chartData);
+      setMainState((prevState) => {
+        // const obj = {};
+        // fetchData.data.chartData.forEach((item) => {
+        //   console.log("item", item, obj[`${item.time}`]);
+        //   obj[`${item.time}`] = item.value;
+        // });
+        // console.log("data", obj);
+        // obj["id"] = "only-row"; // 為了給 table 元件作為 rowKey 的識別，因為 UI 的設計不符合一般 table 的資料結構
+        return {
+          ...prevState,
+          awardData: {
+            ...prevState.awardData,
+            data: fetchData.data.chartData,
+          },
+          awardTableData: [fetchData.data.chartData],
+        };
       });
-      obj["id"] = "only-row"; // 為了給 table 元件作為 rowKey 的識別，因為 UI 的設計不符合一般 table 的資料結構
-      return {
-        ...prevState,
-        awardData: {
-          ...prevState.awardData,
-          today: fetchData.today,
-        },
-        awardTableData: [obj],
-      };
-    });
+    }
   }, [setMainState]);
 
   // 取得得標狀態的表格欄位

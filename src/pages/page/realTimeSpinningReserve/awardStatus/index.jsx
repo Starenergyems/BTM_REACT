@@ -10,8 +10,7 @@ import { useEchartAutoResize } from "@/hooks/useEchartAutoResize";
 function AwardStatus() {
   const [mainState, setMainState] = useState({
     awardData: {
-      today: [],
-      tomorrow: [],
+      data: [],
     },
     awardStatus: "today",
     awardTableData: [],
@@ -26,7 +25,7 @@ function AwardStatus() {
   const {
     customLegendOnClick,
     getAwardData,
-    getAwardSatusTableColumns,
+    // getAwardSatusTableColumns,
     getAwardPowerOption,
     setAwardPowerChart,
   } = useHelpers({
@@ -57,9 +56,11 @@ function AwardStatus() {
         ...awardPowerOption,
         series: JSON.parse(JSON.stringify(awardPowerOption.series)),
       };
-      newOption.series[0].data = mainState.awardData[mainState.awardStatus].map(
-        (item) => item.awardPower
+      newOption.series[0].data = mainState.awardData.data.map(
+        (item) => item.value
       );
+      const aa = mainState.awardData.data.map((item) => item.value);
+      console.log("aa", aa);
       setAwardPowerChart(newOption);
     }
   }, [
@@ -92,7 +93,8 @@ function AwardStatus() {
             }}
           /> */}
           {/* {toDateTimeStr(new Date().setDate(new Date().getDate() + 1), "YYYY/MM/DD")} */}
-          {toDateTimeStr(new Date(), "YYYY/MM/DD")}
+          {/* {toDateTimeStr(new Date(), "YYYY/MM/DD")} */}
+          2025/12/30
         </div>
 
         {/* <Flex align="center" className="cloud-status-container">
