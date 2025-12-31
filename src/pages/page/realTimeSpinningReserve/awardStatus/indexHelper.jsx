@@ -1,8 +1,9 @@
 import { useCallback } from "react";
 import * as echarts from "echarts";
+import { toDateTimeStr } from "@/utils/format";
 import { color } from "@/styles/variable/indexStyle";
 import { customLegendNameMap } from "./indexConfig";
-// import { api } from "@/slices/api/setting";
+import { api } from "@/slices/api/setting";
 
 // useHelpers 為最外層 function，function 內區塊的撰寫順序由上而下為：
 // 1. useCallback 需要相依的 function
@@ -35,12 +36,11 @@ function useHelpers({ refs, setMainState }) {
     //     return { hour: index, awardCapacity: 0, awardPower: 0 };
     //   }),
     // };
-    // const fetchData = await api.get("vpp-dr/award-status?date=2025-12-30");
-    // console.log("fetchData", fetchData);
+    const today = toDateTimeStr(new Date(), "YYYY-MM-DD");
+    const fetchData = await api.get(`vpp-dr/award-status?date=${today}`);
+    console.log("fetchDataa", fetchData);
 
-    const fetchData = customLegendNameMap.res;
     if (fetchData?.status === 200) {
-      console.log("fetchData", fetchData, fetchData.data.chartData);
       setMainState((prevState) => {
         // const obj = {};
         // fetchData.data.chartData.forEach((item) => {
@@ -53,9 +53,9 @@ function useHelpers({ refs, setMainState }) {
           ...prevState,
           awardData: {
             ...prevState.awardData,
-            data: fetchData.data.chartData,
+            data: fetchData.data.data.chartData,
           },
-          awardTableData: [fetchData.data.chartData],
+          awardTableData: [fetchData.data.data.chartData],
         };
       });
     }
@@ -170,9 +170,9 @@ function useHelpers({ refs, setMainState }) {
         ),
       },
       yAxis: {
-        min: 0,
-        max: 3000,
-        inerval: 500,
+        // min: 0,
+        // max: 3000,
+        // inerval: 500,
         name: "得標功率 (kW)",
         nameLocation: "end",
         nameTextStyle: {

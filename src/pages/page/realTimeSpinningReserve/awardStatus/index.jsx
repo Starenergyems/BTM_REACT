@@ -93,8 +93,7 @@ function AwardStatus() {
             }}
           /> */}
           {/* {toDateTimeStr(new Date().setDate(new Date().getDate() + 1), "YYYY/MM/DD")} */}
-          {/* {toDateTimeStr(new Date(), "YYYY/MM/DD")} */}
-          2025/12/30
+          {toDateTimeStr(new Date(), "YYYY/MM/DD")}
         </div>
 
         {/* <Flex align="center" className="cloud-status-container">
