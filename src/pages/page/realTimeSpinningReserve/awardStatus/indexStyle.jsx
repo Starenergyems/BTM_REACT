@@ -17,6 +17,9 @@ const style = styled.div`
       }
     }
   }
+  .ant-card-body{
+    padding: 0px;
+  }
 
   .section-header {
     background-color: ${color.themeBlack};
@@ -30,7 +33,13 @@ const style = styled.div`
     }
   }
   .revenue-sharing-bar-stack-chart {
-    min-height: 300px;
+    min-height: 320px;
+  }
+
+  .revenue-sharing-bar-stack-chart canvas {
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 12px;
   }
   .custom-legend {
     position: relative;
