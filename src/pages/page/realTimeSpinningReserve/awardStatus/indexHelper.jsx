@@ -180,7 +180,7 @@ function useHelpers({ refs, setMainState }) {
           fontWeight: "lighter",
           fontSize: 14,
           verticalAlign: "top",
-          padding: [-25, 0, 10, 0],
+          padding: [-25, -40, 10, 0],
         },
         type: "value",
         axisLabel: {
