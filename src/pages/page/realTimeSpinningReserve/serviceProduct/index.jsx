@@ -103,6 +103,7 @@ function ServiceProduct() {
 
       setRealTimeSpinningReservePowerChart(newOption);
     }
+    // setRealTimeSpinningReservePowerChart(awardPowerOption);
   }, [awardPowerOption, setRealTimeSpinningReservePowerChart]);
 
   return (
