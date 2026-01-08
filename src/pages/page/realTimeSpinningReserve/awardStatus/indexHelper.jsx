@@ -132,9 +132,9 @@ function useHelpers({ refs, setMainState }) {
       },
       grid: {
         top: 50,
-        left: 0,
+        left: 20,
         right: 38,
-        bottom: 40,
+        bottom: 60,
         containLabel: true,
       },
       legend: {
@@ -180,7 +180,7 @@ function useHelpers({ refs, setMainState }) {
           fontWeight: "lighter",
           fontSize: 14,
           verticalAlign: "top",
-          padding: [-25, 0, 10, 0],
+          padding: [-25, -40, 10, 0],
         },
         type: "value",
         axisLabel: {
@@ -208,6 +208,7 @@ function useHelpers({ refs, setMainState }) {
           },
           symbolSize: 7,
           barWidth: "50%",
+          
         },
       ],
     };

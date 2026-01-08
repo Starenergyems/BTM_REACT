@@ -59,9 +59,40 @@ function AwardStatus() {
       newOption.series[0].data = mainState.awardData.data.map(
         (item) => item.value
       );
-      const aa = mainState.awardData.data.map((item) => item.value);
-      console.log("aa", aa);
+      
+      
       setAwardPowerChart(newOption);
+      const isShowNoData=mainState.awardData.data.every((series) => series.value===0)
+      awardPowerChartRef.current.showLoading();
+       
+      if (isShowNoData) {
+        
+        setTimeout(() => {
+          awardPowerChartRef.current.hideLoading();
+          setAwardPowerChart({...newOption,
+            title: {
+              text: '暫無數據顯示',
+              textStyle: {
+                color: color.white,
+                fontSize: 16,
+                fontWeight: "normal",
+              },
+              left: "center",
+              top:"center",
+            },
+            tooltip: {
+              show: false,
+            },
+            xAxis: {
+              show: false
+            },
+            yAxis: {
+              show: false
+            },
+          });
+        },2000);
+        
+      }
     }
   }, [
     mainState.awardData,

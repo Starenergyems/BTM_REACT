@@ -8,9 +8,6 @@ import SendEmail from "@/pages/page/sendEmail";
 import ResetSuccess from "./pages/page/resetSuccess";
 
 const pagesPathName = {
-
-  // 測試頁面
-  test: { routeName: "test", path: "/test", pathName: "測試頁" },
   // 設定頁面
   setting: {
     // 系統設定
@@ -112,13 +109,13 @@ const routes = [
     path: pagesPathName.home.routeName,
     element: <ProtectedRoute element={PageIndex} />,
     children: [
-      {
-        // 測試頁
-        path: pagesPathName.test.path,
-        async lazy () {
-          return getLazyComponent(await import("@/pages/page/test/index"));
-        },
-      },
+      // {
+      //   // 測試頁
+      //   path: pagesPathName.test.path,
+      //   async lazy () {
+      //     return getLazyComponent(await import("@/pages/page/test/index"));
+      //   },
+      // },
       {
         // 示範頁
         path: pagesPathName.demo.path,

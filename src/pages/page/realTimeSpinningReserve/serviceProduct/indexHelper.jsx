@@ -31,6 +31,8 @@ function useHelpers({ refs, setMainState }) {
     const totalMinutes = endHour * 60 + endMinute + 1;
     const result = new Array(totalMinutes);
 
+    console.log("generateMinuteIntervals totalMinutes:", totalMinutes, result);
+
     // 初始化第一個值（可自行調整）
     let prevLoad = 30; // 初始負載功率
 
@@ -418,7 +420,7 @@ function useHelpers({ refs, setMainState }) {
         },
       ],
     };
-  }, [generateMinuteIntervals, realTimeSpinningReservePowerRef]);
+  }, [res, generateMinuteIntervals, realTimeSpinningReservePowerRef]);
 
   // 服務商品繪製
   const setRealTimeSpinningReservePowerChart = useCallback(
